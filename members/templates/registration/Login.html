@@ -1,0 +1,98 @@
+{% extends 'Base.html'%}
+{% load static%}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/login.css' %}">
+
+{% endblock %}
+{% block title %}
+        Login to the Blog Page
+    {% endblock %}
+
+{% block content%}
+{% comment %} <div class="main_login_div"> {% endcomment %}
+{% comment %} <h1>Members Login</h1>
+<div class="form-group">
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">User Name</label>
+            <input type="text" class="form-control" name = "username">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password">
+          </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <a href="{% url 'register-user' %}">
+      <button class="btn btn-primary register_button">
+        Register
+      </button>
+    </a>
+    <br>
+</div>
+</div> {% endcomment %}
+<section class="ftco-section">
+  <div class="container">
+    {% comment %} <div class="row justify-content-center">
+      <div class="col-md-6 text-center mb-5">
+        <h2 class="heading-section">Login #05</h2>
+      </div>
+    </div> {% endcomment %}
+    <div class="row justify-content-center">
+      <div class="col-md-7 col-lg-5">
+        <div class="wrap">
+          <div class="img" style="background-image: url({% static "FrontEnd1/Static_Images/Login/bg-1.jpg" %});"></div>
+          <div class="login-wrap p-4 p-md-5">
+            <div class="d-flex">
+              <div class="w-100">
+                <h3 class="mb-4">Sign In</h3>
+              </div>
+              <div class="w-100">
+                <p class="social-media d-flex justify-content-end">
+                  {% comment %} <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a> {% endcomment %}
+                  {% comment %} <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a> {% endcomment %}
+                </p>
+              </div>
+            </div>
+            <form action="" class="signin-form" method="POST">
+              {% csrf_token %}
+              <div class="form-group mt-3">
+                <input type="text" class="form-control" name="username" required>
+                <label class="form-control-placeholder"  for="username">Username</label>
+              </div>
+              
+              <div class="form-group" style="margin-top:30px;">
+                <input id="password-field" type="password" class="form-control" name="password" required>
+                <label class="form-control-placeholder"  for="password">Password</label>
+                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+              </div>
+              <div class="form-group d-md-flex">
+                <div class="w-50 text-left">
+                  <label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+                  <input type="checkbox" checked>
+                  <span class="checkmark"></span>
+                  </label>
+                </div>
+                <div class="w-50 text-md-right">
+                  <a href="">Forgot Password</a>
+                </div>
+              </div>
+            </form>
+            <p class="text-center">Not a member? <a data-toggle="tab" href="{% url 'register-user' %}">Sign Up</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock %}
+

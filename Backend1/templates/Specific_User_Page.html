@@ -1,0 +1,63 @@
+{% extends 'base.html'%}
+{% load static%}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/Specific_User_Page.css' %}">
+{% endblock %}
+
+{% block title %}
+    List of Blogs from specific User page
+{% endblock %}
+
+{% block content %}
+<div class="specific_user_main_div">
+{% comment %} <h1>hello from the Specific User Page</h1> {% endcomment %}
+
+{% comment %} {{Data}} {% endcomment %}
+{% comment %} <br> {% endcomment %}
+{% comment %} <hr> {% endcomment %}
+{% comment %} {{Data.user}} {% endcomment %}
+{% comment %} <br> {% endcomment %}
+{% comment %} <hr> {% endcomment %}
+{% comment %} {{Data.person}} {% endcomment %}
+    {% comment %} {{person.First_name}} {% endcomment %}
+    {% comment %} {{person.Last_name}} {% endcomment %}
+    {% comment %} {{person.Email}} {% endcomment %}
+    {% comment %} <hr> {% endcomment %}
+    {% comment %} {{Data.user.People.Birth_Date}} {% endcomment %}
+
+
+
+    {% comment %} {{Data.person.Birth_Date}}
+    {{Data.person.user.username}}
+
+    {% if Data.person.photo %}
+    <div class="profile_image">
+        <img src="{{Data.person.photo.url}}" alt="No photo" class="image_of_user">
+        
+    </div>
+    {% else %}
+        <div class="header_Image">
+            <a href="#">{{Data.first_char}}</a>
+            
+        </div>
+    {% endif %}
+    <div class="username_user">
+        <h2>{{Data.person.user.username}}</h2>        
+    </div>
+
+
+    <hr>
+    <hr>
+    {% for i in Data.user_Ads %}
+        {{i.title}}
+        {{i.description}}
+    <hr>
+    {% endfor %}
+</div> {% endcomment %}
+<h1> Coming Up Soon </h1>
+{% block scripts %}
+{% endblock %}
+
+
+{% endblock%}

@@ -1,0 +1,39 @@
+.header_Image{
+    height:70px;
+    width:70px;
+    border-radius:50%;
+    background-color: black;
+    margin:auto;
+
+}
+.header_Image a{
+    color:white;
+    font-size:40px;
+    font-weight:bold;
+    margin-left:21px;
+    padding-top:20px;
+    text-decoration: none;
+
+}
+.profile_image{
+    margin: auto;
+    /* background-color: aquamarine; */
+    height:70px;
+    width:70px;
+}
+.image_of_user{
+    height:70px;
+    width:70px;
+    border-radius:50%;
+}
+
+.username_user{
+    text-align: center;
+}
+.specific_user_main_div{
+    margin-top:50px;
+    /* align-items: center; */
+    text-align: center;
+    /* margin-left:50px; */
+    /* margin-right:50px; */
+}

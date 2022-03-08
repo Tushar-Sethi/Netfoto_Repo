@@ -1,0 +1,70 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block styles %}
+{% endblock %}
+{% block title %}
+    List of Blogs from create a post
+{% endblock %}
+{% block content %}
+    <h1>Post Create</h1>
+    <section>
+        <div class="container">
+          <form method='Post' action="{% url 'Save_Post_TO_DB' %}" role="form" id="Ad-save-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="step step-1 active">
+              <div class="form-group">
+                
+                <label for="Ad-title">Title</label>
+                <input type="text" id="Ad-title" name="Ad-title">
+              </div>
+              <div class="form-group">
+                <label for="Ad-Desc">Description</label>
+                <input type="text" id="Ad-Desc" name="Ad-Desc">
+              </div>
+              
+              <div class="pp">
+                <label for="">Upload File</label>
+                <input type="file" name="file" id="file" multiple>
+              </div>
+              
+              <div class="form-group">
+                <label for="Ad-Tags">Tags</label>
+                <input type="text" id="Ad-Tags" name="Ad-Tags">
+              </div>
+
+              <label for="category">Category</label>
+              <select name="category" id="category">
+              </select>
+              <button id="Ad-Submit-Button">Submit</button>
+            </form>
+            
+          
+        </div>
+
+      </section>
+      {% block scripts %}
+{% comment %} <script src="{% static 'FrontEnd1/JQuery/jquery-3.6.0.min.js' %}"></script> {% endcomment %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function(){
+    $.ajax({
+      url: "{% url 'API-Categories' %}",
+      type: "GET",
+      dataType: "json",
+      success: function(data){
+        console.log(data);
+        var html = "";
+        $.each(data, function(index, value){
+          console.log('INDEX ->' , index)
+          console.log('VALUE ->' , value.title)
+          html += "<option value='"+value.id+"'>"+value.title+"</option>";
+        });
+        //console.log(html);
+        $("#category").html(html);
+      }
+    });
+});
+</script>
+{% endblock %}
+{% endblock%}

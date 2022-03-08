@@ -1,0 +1,167 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/View_Post.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+
+{% endblock %}
+{% block title %}
+    List of Blogs
+{% endblock %}
+{% block content %}
+<div class="View-post-main-container">
+    
+    {% comment %} favourite Button {% endcomment %}
+    <a href="{% url 'favourite_post' post_details.post_id  %}">Add to Favourite</a>
+
+
+
+    {% comment %} <h1>Hello from View Post</h1> {% endcomment %}
+    {% comment %} {{post_details}} {% endcomment %}
+    {% comment %} <br> {% endcomment %}
+    {% comment %} {% for i in post_details.comments %}
+    {{i.user.email}}
+    {% endfor %} {% endcomment %}
+    {% comment %} <hr> {% endcomment %}
+    {% comment %} {{post_details.post_images}} {% endcomment %}
+    {% comment %} <hr> {% endcomment %}
+    {% comment %} {{post_details.post_comments}} {% endcomment %}
+    {% comment %} {{post_details.total_comments}} {% endcomment %}
+    {% comment %} {{i.post_comments}} {% endcomment %}
+    {% comment %} <hr> {% endcomment %}
+    {% comment %} <hr> {% endcomment %}
+    {% comment %} <hr> {% endcomment %}
+    {% comment %} {{post_details}} {% endcomment %}
+    {% comment %} {{post_details.user.person.photo}} {% endcomment %}
+
+
+    {% comment %} {{post_details.people}} {% endcomment %}
+    {% if post_details.people.photo %}
+    <div class="profile_image">
+        <a href="{% url 'SpecificUser' post_details.post_UserId %}">
+        <img src="{{post_details.people.photo.url}}" alt="No photo" class="image_of_user">
+        </a>
+    </div>
+    {% else %}
+        <div class="header_Image">
+            <a href="{% url 'SpecificUser' post_details.post_UserId %}">
+                {{post_details.first_char}}
+            </a>
+        </div>
+    {% endif %}
+    <div class="username_user">
+        <a href="{% url 'SpecificUser' post_details.post_UserId %}">
+            <h2>{{post_details.post_userName}}</h2>
+        </a>        
+    </div>
+
+    <div class="swiper">
+        <div class="swiper-wrapper">
+            {% for image in post_details.post_images %}
+          <div class="swiper-slide bg"><img src="{{image.image.url}}" alt="hello" style="width:700px; height:500px;"/></div>
+          {% endfor %}
+        </div>
+        <div class="swiper-button-next" ></div>
+        <div class="swiper-button-prev" ></div>
+      </div>    
+
+
+    <div class="Ad_Title_Desc">
+        <h3>
+            {% comment %} <a href="{% url 'view_post' post_details.post_id %}"> {% endcomment %}
+            {{ post_details.post_title }}
+            {% comment %} </a> {% endcomment %}
+        </h3>
+        <p>
+            {{ post_details.post_description }}
+        </p>
+    </div>
+    <div class="icons_data">
+        <div class="comments">
+            <a href="#">
+                <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Comments.png' %}"/>
+            </a>
+          {{ post_details.total_comments }} comments
+        </div>
+      <div class="likes">
+        <a href="#">
+            <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}"/>
+        </a>
+          {{ post_details.post_likesCount }} likes
+      </div>
+      <div class="share">
+        <a href="#">
+            <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}"/>
+        </a>
+            Share
+      </div>
+      <div class="save">
+        <a href="#">
+            <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Save.png' %}"/>
+        </a>
+        Save
+      </div>
+    </div>
+        <hr>
+        <div class="write_comment">
+            <h3>Write a comment</h3>
+            <br>
+            <form action="{% url 'comment_post' post_details.post_id %}" method="POST" >
+                {% csrf_token %}
+                <textarea name="comment" id="" style="width:100%;"></textarea>
+                <div class="col-md-12" style="text-align:end;">
+                    <button type="submit" class="btn btn-primary" >Comment</button>
+                </div>
+            </form>
+          </div>
+          <hr>
+      {% for comment in post_details.post_comments %}
+        <div class="comment_under_the_Post">
+            <div class="Comment_person_photo">
+                {% if comment.user.people.photo %}
+                <a href="{% url 'SpecificUser' comment.user.id %}">
+                    <img src="{{comment.user.people.photo.url}}" alt="" class="">
+                </a>
+                {% else %}
+                    <div class="person_with_no_image">
+                        <a href="{% url 'SpecificUser' comment.user.id %}">{{comment.user.username.0}}</a>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="actual_comment_info" >
+                <span class="comment_people_Name">
+                    <a href="{% url 'SpecificUser' comment.user.id %}">
+                        {{comment.user.first_name|title}} {{comment.user.last_name|title}}
+                    </a>
+                </span> 
+                <i>
+                    says
+                </i>
+                <p style="margin-bottom:10px;">
+                    {{comment.comment}}
+                </p>
+                <p>
+                    <span style="font-size:12px;"><i>{{comment.Created_date|date:"M d, Y"}}</i></span>
+                </p>
+            </div>
+        </div>
+      <hr>
+      {% endfor %}
+      
+    </div>
+
+    <div style="margin-top:70px;"></div>
+  </div>
+      {% block scripts %}
+      <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+
+      <script type="module">
+        var swiper = new Swiper('.swiper', {
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+        });
+      </script>
+    {% endblock %}
+{% endblock %}
