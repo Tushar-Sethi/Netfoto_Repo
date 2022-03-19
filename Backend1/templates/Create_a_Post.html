@@ -1,70 +1,178 @@
-{% extends 'base.html'%}
+{% extends 'Base.html'%}
 {% load static%}
 {% block styles %}
+<link rel="stylesheet" href="{% static 'FrontEnd1/css/Create_a_Post.css' %}">
 {% endblock %}
 {% block title %}
     List of Blogs from create a post
 {% endblock %}
 {% block content %}
-    <h1>Post Create</h1>
-    <section>
-        <div class="container">
-          <form method='Post' action="{% url 'Save_Post_TO_DB' %}" role="form" id="Ad-save-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="step step-1 active">
-              <div class="form-group">
-                
-                <label for="Ad-title">Title</label>
-                <input type="text" id="Ad-title" name="Ad-title">
-              </div>
-              <div class="form-group">
-                <label for="Ad-Desc">Description</label>
-                <input type="text" id="Ad-Desc" name="Ad-Desc">
-              </div>
-              
-              <div class="pp">
-                <label for="">Upload File</label>
-                <input type="file" name="file" id="file" multiple>
-              </div>
-              
-              <div class="form-group">
-                <label for="Ad-Tags">Tags</label>
-                <input type="text" id="Ad-Tags" name="Ad-Tags">
-              </div>
-
-              <label for="category">Category</label>
-              <select name="category" id="category">
-              </select>
-              <button id="Ad-Submit-Button">Submit</button>
-            </form>
-            
-          
+  <section>
+    <form id="regForm" action="{% url 'Save_Post_TO_DB' %}" method="POST" role="form" id="Ad-save-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="tab">
+        <h1 class="text-center">
+          Get Free Photographs:
+        </h1>
+        <div class="container1">
+          <input type="file" id="file-input" name="files" onchange="preview()" multiple accept="image/*">
+          <label for="file-input">
+            <i class="fa fa-upload choose_photo">
+            </i> &nbsp; Choose Your Photos
+          </label>
+          <p id="num-of-files">
+            No Files Chosen
+          </p>
+          <div id="images-space">
+          </div>
+        </div>
+      </div>
+        
+      <div class="tab" >
+        <div class="container1">
+        <div id = "images_2nd_div_heading">
+        </div>
+        <div id = "main_2nd_tab_div">
+          <div id="images_2nd">
+          </div>
         </div>
 
-      </section>
-      {% block scripts %}
-{% comment %} <script src="{% static 'FrontEnd1/JQuery/jquery-3.6.0.min.js' %}"></script> {% endcomment %}
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <div id="Tags-div" class="text-center">
+        </div>
 
+        <p><input name = "Ad-title" placeholder="Write a Heading" oninput="this.className = ''"></p>
+        <p><input name = "Ad-Desc" placeholder="Write a Description" oninput="this.className = ''"></p>
+        <!-- <label for="category">Please Select you product Cateory</label> -->
+          {% comment %} <select name="category" id="category" class="form-select">
+            <option disabled selected value>Post Category</option>
+          </select> {% endcomment %}
+        </div>
+      </div>
+
+        <!-- Footer Buttons -->
+      <div class="footer_buttons" id="Footer_Buttons">
+        <button class="btn" type="button" id="prevBtn" onclick="nextPrev(-1)">
+          <i class="fa fa-angle-left" aria-hidden="true">
+          </i>
+        </button>
+        <button class="btn" type="button" id="nextBtn" onclick="nextPrev(1)" style="margin-top:10px;">
+        </button>
+      </div>
+        
+
+        <!-- <div class="footer-buttons">
+          <div class="footer-buttons-div" >
+            <div class="text-center">
+              <button class="btn" type="button" id="prevBtn" onclick="nextPrev(-1)">
+                <i class="fa fa-angle-left" aria-hidden="true">
+                </i>
+              </button>
+            </div>
+            <div style="background-color:black; width:60px; height:60px; border-radius:50%;" class="text-center">
+              <button class="btn" type="button" id="nextBtn" onclick="nextPrev(1)" style="margin-top:10px;">
+              </button>
+            </div>
+          </div>
+        </div> -->
+        
+        <!-- Circles which indicates the steps of the form: -->
+        <div style="text-align:center;margin-top:40px; display: none;">
+          <span class="step"></span>
+          <span class="step"></span>
+        </div>    
+        
+        <!-- Modal Box -->
+        <div class="modal fade" id="mymodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="margin:auto;">Add URL</h5>
+                <select name="Product_available_at" id="Product_available_at" class="form-select">
+                  <option disabled></option>
+                </select>
+              </div>
+              <div class="modal-body">
+                <div id="modal-id-1">
+                  <input name = "Tag1" id="Tag1" placeholder="Paste URL" style="margin-bottom:2px;">
+                  <input name = "Tag1-Name" id="Tag1-Name" placeholder="Rename URL">
+                </div>
+                <div id="modal-id-2">
+                  <hr>
+                  <input name="Tag2" id="Tag2" placeholder="Paste URL" style="margin-bottom:2px;">
+                  <input name="Tag2-Name" id="Tag2-Name" placeholder="Rename URL">
+                </div>
+                <div id="modal-id-3">
+                  <hr>
+                  <input name = "Tag3" id="Tag3" placeholder="Paste URL" style="margin-bottom:2px;">
+                  <input name = "Tag3-Name" id="Tag3-Name" placeholder="Rename URL">
+                </div>
+              </div>
+              <div class="text-center">
+                <i class="fa fa-plus-circle font-awesome-class" onclick="first_click();" id="first"></i>
+                <i class="fa fa-plus-circle font-awesome-class" onclick="second_click();" id="second"></i>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="show_tags();">Insert Tags</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="background-color:gray; padding:10px; border-radius:50%;"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </form>
+  </section>
+  <br>
+  <br>
+  
+      {% endblock%}
+      {% block scripts %}
+<script src="{% static 'FrontEnd1/js/Create_a_Post.js' %}"></script>
 <script>
   $(document).ready(function(){
+    // $.ajax({
+    //   url: "{% url 'API-Categories' %}",
+    //   type: "GET",
+    //   dataType: "json",
+    //   success: function(data){
+    //     //console.log(data);
+    //     var html = "";
+    //     $.each(data, function(index, value){
+    //       //console.log('INDEX ->' , index)
+    //       //console.log('VALUE ->' , value.title)
+    //       html += "<option value='"+value.id+"'>"+value.title+"</option>";
+    //     });
+    //     $("#category").append(html);
+    //   }
+    // });
+    console.log('Hi');
     $.ajax({
-      url: "{% url 'API-Categories' %}",
+      url: "{% url 'API-Product-available-at' %}",
       type: "GET",
       dataType: "json",
       success: function(data){
         console.log(data);
         var html = "";
         $.each(data, function(index, value){
-          console.log('INDEX ->' , index)
-          console.log('VALUE ->' , value.title)
+          //console.log('INDEX ->' , index)
+          //console.log('VALUE ->' , value.title)
           html += "<option value='"+value.id+"'>"+value.title+"</option>";
         });
-        //console.log(html);
-        $("#category").html(html);
+        $("#Product_available_at").append(html);
       }
     });
+    $("#modal-id-2").hide();
+    $("#modal-id-3").hide();
+    $("#second").hide();
 });
+
+function first_click(){
+  $("#modal-id-2").show();
+  $("#first").hide();
+  $("#second").show();
+}
+function second_click(){
+  $("#modal-id-3").show();
+  $("#second").hide();
+}
+
 </script>
 {% endblock %}
-{% endblock%}

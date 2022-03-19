@@ -12,6 +12,7 @@ urlpatterns = [
     path('view-post/<int:pk>/' , views.view_post , name='view_post'),
     path('favourite-post/<int:pk>/',views.favourite_post,name='favourite_post'),
     path('comment-post/<int:pk>/',views.comment_post,name='comment_post'),
+    path('search/',views.search,name='search'),
     
 
 
@@ -19,5 +20,9 @@ urlpatterns = [
     path('api/view_All_Ads/',views.View_ALL_Post,name='API-View'),
     path('api/get_categories/',views.Get_categories,name='API-Categories'),
     path('api/like_post/',views.like_post,name='API-Like'),
+    path('api/HidePost/',views.HidePost,name = 'API-HidePost'),
+    path('api/get_post_availablity',views.get_post_availablity,name='API-Product-available-at'),
+    path('api/savePost',views.favouritePost,name='API-SavePost'),
+    path('api/follow-user/',views.follow_user,name="API-FollowUser"),
 
 ]

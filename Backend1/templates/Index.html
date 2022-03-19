@@ -1,142 +1,274 @@
 {% extends 'base.html'%}
-
 {% load static%}
-
 {% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/Index.css' %}">
-<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
-
+    <link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/Index.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
 {% endblock %}
 
 {% block title %}
     List of Blogs
 {% endblock %}
 <style>
-    .swiper {
-        width: 100%;
-        height: 100%;
-      }
-  
-      .swiper-slide {
-        text-align: center;
-        font-size: 18px;
-        background: #fff;
-  
-        /* Center slide text vertically */
-        display: -webkit-box;
-        display: -ms-flexbox;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-box-pack: center;
-        -ms-flex-pack: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        -webkit-align-items: center;
-        align-items: center;
-      }
+  .swiper {
+    width: 100%;
+    height: 100%;
+  }
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
 </style>
 {% block content %}
-<div class="Index_main_Container">
-    {% for i in post %}
-    
-    {% comment %} OWNER DETAILS {% endcomment %}
-    {% comment %} {% if post_details.people.photo %}
-    <div class="profile_image">
-        <a href="{% url 'SpecificUser' post_details.post_UserId %}">
-        <img src="{{post_details.people.photo.url}}" alt="No photo" class="image_of_user">
-        </a>
-    </div>
-    {% else %}
-        <div class="header_Image">
-            <a href="{% url 'SpecificUser' post_details.post_UserId %}">
-                {{post_details.first_char}}
+  <div class="Index_main_Container">
+    <div class="container12">
+      {% for i in post %}      
+      {% comment %} OWNER DETAILS {% endcomment %}
+      <div class="Ad-user-details">
+        <div style="visibility: hidden;">
+          This
+        </div>
+        <div style="">
+          {% if i.people_photo %}
+          <div class="profile_image">
+            <a href="{% url 'SpecificUser' i.user_id %}">
+              <img src="{{i.people_photo.url}}" alt="No photo" class="image_of_user">
             </a>
+          </div>
+          {% else %}
+          <div class="header_Image">
+            <a href="{% url 'SpecificUser' i.user_id %}">
+                {{i.first_char}}
+            </a>
+          </div>
+          {% endif %}
+          <div class="username_user">
+            <a href="{% url 'SpecificUser' i.user_id %}">
+              <h5>{{i.userName}}</h5>
+            </a>        
+          </div>
         </div>
-    {% endif %}
-    <div class="username_user">
-        <a href="{% url 'SpecificUser' post_details.post_UserId %}">
-            <h2>{{post_details.post_userName}}</h2>
-        </a>        
-    </div> {% endcomment %}
-    {% comment %} TIll here {% endcomment %}
-    <div class="Ad_Owner">
-        <a href="{% url 'SpecificUser' i.user_id %}">
-            {{i.user.UserImage}}
-            <h2>{{i.userName}}</h2>
-        </a>
-    </div>
-    <br>
-    {% comment %} IMAGE CARAOUSEL {% endcomment %}
-    <div class="swiper">
-        <div class="swiper-wrapper">
-            {% for image in i.images %}
-          <div class="swiper-slide bg"><img src="{{image.image.url}}" alt="hello"/></div>
-          {% endfor %}
+        <div class="menu-button-post">
+          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Comments.png' %}" alt="" style="width: 30px;
+          height: 30px;" data-bs-toggle="modal" data-bs-target="#post_menu{{i.post_id}}">
         </div>
-        <div class="swiper-button-next" ></div>
-        <div class="swiper-button-prev" ></div>
       </div>
+    {% comment %} OWNER DETAILS TIll here {% endcomment %} 
+      {% comment %} Modal Box {% endcomment %}
+<!-- Modal -->
+<div class="modal fade" id="post_menu{{i.post_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+
+        <div class="main_modal_box_post_menu">
+          <div class="first_div post_menu_common"><div onclick = "share({{i.post_id}});" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.post_id}}">Share</div><div onclick = "share({{i.post_id}});" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.post_id}}"><img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}"/></div></div>
+          <div class="second_div post_menu_common"><div onclick="copyURLFunction({{i.post_id}})">Copy Link</div><div onclick="copyURLFunction({{i.post_id}})"><img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}"/></div></div>
+          <div class="third_div post_menu_common">
+            <div>
+              {% if user.is_authenticated %}
+              <a href="{% url 'SpecificUser' user.id %}" class="nav_link">
+                contact
+              </a>  
+              {% else %}
+              <a href="{% url 'login-in' %}" class="nav_link">
+                contact
+              </a>  
+              {% endif %}
+            </div>
+            <div>
+              {% if user.is_authenticated %}
+                <a href="{% url 'SpecificUser' user.id %}" class="nav_link">
+                  <img src="{% static 'FrontEnd1/Static_Images/NavBar/CovrPage_Profile_B.png' %}" alt="">
+                </a>  
+              {% else %}
+              <a href="{% url 'login-in' %}" class="nav_link">
+                <img src="{% static 'FrontEnd1/Static_Images/NavBar/CovrPage_Profile_B.png' %}" alt="">
+              </a>  
+              {% endif %}
+            </div>
+          </div>
+          <div class="fourth_div post_menu_common"><div onclick="HidePost({{i.post_id}});">Hide</div><div><img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}" onclick="HidePost({{i.post_id}});"/></div></div>
+          <div class="fifth_div">
+            {% if i.user_id != i.current_user_id %}
+              {% if i.isFollowed == False %}
+                <div class="follow_post_div" id="follow_state_change_{{i.user_id}}" onclick="Follow_Unfollow_user({{i.user_id}});">Follow</div>
+              {% else %}
+                <div class="follow_post_div" id="follow_state_change_{{i.user_id}}" onclick="Follow_Unfollow_user({{i.user_id}});">Unfollow</div>
+              {% endif %}
+            {% endif %}
+
+            <div class="report_post_div"><button class="btn btn-danger">Report</button></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer1" style="margin-left: auto; margin-right: 0;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button><br>
+        <div id="messages_modal_box{{i.post_id}}" class="message_modal_box">Link copied</div>
+        <div style="visibility: hidden;">Link copieddddd</div>
+      </div>
+    </div>
+  </div>
+</div>
+      {% comment %} Modal Box {% endcomment %}
+    {% comment %} IMAGE CARAOUSEL {% endcomment %}
+    <div class="Book_image_shadow">
+    <div class="swiper">
+      <div class="swiper-wrapper">
+        {% for image in i.images %}
+        <div class="swiper-slide bg">
+          <img src="{{image.image.url}}" alt="hello"/>
+          {% if forloop.counter == 1 %}
+          <div id="photo_Tag_Box">
+            {% if i.Tag1 is not none %}
+            <img 
+              src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}" 
+              onclick="tag_box_show({{i.post_id}});" />
+            <div class="text-center tag_box" id="tag_box_{{i.post_id}}">
+              <div style="display:flex; justify-content:space-between; align-items:center"><h6>{{i.product_availability.title}}</h6>
+                <i class="fa fa-window-close btn" aria-hidden="true" style="color:white;" onclick="hide_tag_box({{i.post_id}})"></i>
+              </div>
+              <hr>
+              <p><a href="{{i.Tag1}}" target="_blank">{{i.Tag1_Name}}</a></p><hr>
+              {% if i.Tag2 is not none %}
+                <p><a href="{{i.Tag2}}" target="_blank">{{i.Tag2_Name}}</a></p><hr>
+              {% endif %}
+              {% if i.Tag3 is not none %}
+                <p><a href="{{i.Tag3}}" target="_blank">{{i.Tag3_Name}}</a></p>
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="swiper-button-next" ></div>
+      <div class="swiper-button-prev" ></div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-pagination1"></div>
+      
+    </div>
+  </div>
     {% comment %} TILL HERE {% endcomment %}
-    
-    <div class="Ad_Title_Desc">
+
+
+    <div class="icons_data">
+      <div class="comments">
+        <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Comments.png' %}"/>
+          {{i.comments_count}} comments
+        </div>
+      <div class="likes">
+        {% if i.isLiked == True %}
+          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}" id="like_image_state_change_{{i.post_id}}" onclick="LikePost({{i.post_id}});"/>
+        {% else %}
+          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}" id="like_image_state_change_{{i.post_id}}" onclick="LikePost({{i.post_id}});"/>
+        {% endif %}
+        <span id="like_count_index_{{i.post_id}}">
+          {{i.likesCount}}
+        </span>
+      </div>
+      <div class="share" onclick = "share({{i.post_id}});" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.post_id}}">
+          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}"/>
+        Share
+      </div>
+      <div class="save">
+        {% if i.isSaved == True %}
+          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}" id="save_image_state_change_{{i.post_id}}" onclick="SavePost({{i.post_id}})"/>
+        {% else %}
+        <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}" id="save_image_state_change_{{i.post_id}}" onclick="SavePost({{i.post_id}})"/>
+        {% endif %}
+        <span id="save_status_{{i.post_id}}">
+          {{i.IsSaved}}
+        </span>
+      </div>
+    </div>
+
+      <div class="Ad_Title_Desc">
         <h3>
-            <a href="{% url 'view_post' i.post_id %}">
+          <a href="{% url 'view_post' i.post_id %}">
             {{ i.title }}
-            </a>
+          </a>
         </h3>
-        <p>
+        <p class="post-description">
             {{ i.description }}
         </p>
-        <div class="icons_data">
-          <div class="comments">
-          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Comments.png' %}"/>
-            {% comment %} {{ i.actualCommentCount }} {% endcomment %}
-            {{i.comments_count}} comments
-          </div>
-        <div class="likes">
-          {% if i.isLiked == True %}
-          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}" id="like_image_state_change_{{i.post_id}}" onclick="LikePost({{i.post_id}});"/>
-          {% else %}
-          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}" id="like_image_state_change_{{i.post_id}}" onclick="LikePost({{i.post_id}});"/>
-          {% endif %}
-            <span id="like_count_index_{{i.post_id}}">
-              {% comment %} {{ i.actualLikeCount }} {% endcomment %}
-              {{i.likesCount}}</span>
-        </div>
-        <div class="share">
-          <a href="#">
-            <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}"/>
-          </a>
-          Share
-        </div>
-        <div class="save">
-          <a href="#">
-          <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Save.png' %}"/>
-          </a>
-          Save
-        </div>
+        <p>
+          {{i.created_at}}
+        </p>
+        
       </div>
-    </div>
-    <hr>
+      <hr>
+      
+      {% comment %} share {% endcomment %}
+      {% comment %} <div class='container d-flex justify-content-center mt-100'> <button type="button" class="btn btn-primary mx-auto" data-bs-toggle="modal" data-bs-target="#exampleModal{{i.post_id}}"> Share on social media </button> </div> {% endcomment %}
+      <div class="modal fade" id="exampleModal{{i.post_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content col-12">
+                  <div class="modal-header">
+                      <h5 class="modal-title">Share</h5> 
+                      <button type="button" class="btn close" data-bs-dismiss="modal" aria-label="Close"> 
+                        <span aria-hidden="true">
+                          &times;
+                        </span> 
+                      </button>
+                  </div>
+                  <div class="modal-body">
+                      <div class="icon-container1 d-flex">
+                          <div class="smd" onclick="shareTwitter({{i.post_id}});">
+                            <i class="img-thumbnail fa fa-twitter fa-2x" style="color:#4c6ef5;background-color: aliceblue; top:50px;"></i>
+                              <p>Twitter</p>
+                          </div>
+                          <div class="smd" onclick="shareFB({{i.post_id}});"> 
+                            <i class="img-thumbnail fa fa-facebook fa-2x" style="color: #3b5998;background-color: #eceff5;"></i>
+                              <p>Facebook</p>
+                          </div>
+                          <div class="smd" onclick="shareWA({{i.post_id}});"> 
+                            <i class="img-thumbnail fa fa-whatsapp fa-2x" style="color: #25D366;background-color: #cef5dc;"></i>
+                              <p>Whatsapp</p>
+                          </div>
+                          <div class="smd" onclick="shareTele({{i.post_id}});"> 
+                            <i class="img-thumbnail fa fa-telegram fa-2x" style="color: #4c6ef5;background-color: aliceblue"></i>
+                              <p>Telegram</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer"> 
+                    <label style="font-weight: 600">Page Link 
+                      <span class="message"></span>
+                    </label>
+                    <br/>
+                    <div class="row"> 
+                      <input class="col-10 ur" type="url" placeholder="" id="myInput{{i.post_id}}" aria-describedby="inputGroup-sizing-default" style="height: 40px;" disabled> 
+                      <button class="btn cpy" onclick="copyURLFunction({{i.post_id}})">
+                        <i class="fa fa-clone"></i>
+                      </button> 
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% comment %} box {% endcomment %}
+
+
     {% endfor %}
-    {% comment %} <button onclick="Testing();">Test</button> {% endcomment %}
-    <div style="margin-top:70px;"></div>
+    </div>
   </div>
 
-{% comment %} COMMENTS {% endcomment %}
-
-{% comment %} <img src="{{ image.image.url }}" alt="Hello11"> {% endcomment %}
-{% comment %} <button><a href="{% url 'Add_Post' %}">Create an Add</a></button> {% endcomment %}
-{% comment %} {{i.images_set.all}} {% endcomment %}
-{% comment %} {% for image in i.images %} {% endcomment %}
-{% comment %} {% if forloop.counter != 1 %} class="slide" {% endif %} {% endcomment %}
-{% comment %} {{i.comments}} {% endcomment %}
-{% comment %} Likes -> {{i.likesCount}} {% endcomment %}
-
-{% comment %} Till Here {% endcomment %}
-
+{% endblock %}
 {% block scripts %}
 <script src="{% static 'FrontEnd1/js/Main.js' %}"></script>
 <script src="{% static 'FrontEnd1/js/Common.js' %}"></script>
@@ -146,16 +278,34 @@
   var csrfToken = "{{ csrf_token }}";
   var like_red_photo_path = "{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}";
   var like_white_photo_path = "{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}";
+  var Notsaved = "{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}";
+  var saved = "{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}";
+  var hidePost = "{% url 'API-HidePost' %}";
+  var savePost = "{% url 'API-SavePost' %}";
+  var follow_unfollow_user = "{% url 'API-FollowUser' %}";
   var swiper = new Swiper('.swiper', {
     navigation: {
       nextEl: '.swiper-button-next',
       prevEl: '.swiper-button-prev',
     },
+    pagination: {
+      el: '.swiper-pagination',
+      dynamicBullets: true,
+      
+    },
+    //pagination: {
+      //el: '.swiper-pagination1',
+      //dynamicBullets: true,
+      //type:'fraction'
+      
+    //},
   });
+  $(document).ready(function(){
+    console.log('Ready');
+  })
 
   {% comment %} function Testing(){
     alert("Hello");
   } {% endcomment %}
 </script>
-{% endblock %}
 {% endblock %}

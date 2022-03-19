@@ -8,22 +8,37 @@ class Category(models.Model):
     title = models.CharField(max_length=255,null=True)
     Created_date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.title
+    # def __str__(self):
+    #     return self.title
+
+class ProductAvailability(models.Model):
+    title = models.CharField(max_length=255,null=True)
+    Created_date = models.DateTimeField(auto_now_add=True)
+    Updated_date = models.DateTimeField(auto_now=True)
+
+    # def __str__(self):
+    #     return self.title
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    title = models.CharField(max_length=255)   
+    # category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    ProductAvailability = models.ForeignKey(ProductAvailability, on_delete=models.PROTECT, null=True, blank=True)
+    title = models.CharField(max_length=255,null=True)   
     description = models.CharField(max_length=1000,null=True)
-    Tags = models.CharField(max_length = 255,null=True,blank=True)
-    Created_date = models.DateTimeField(auto_now_add=True)
-    Updated_date = models.DateTimeField(auto_now=True)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
     Likes = models.ManyToManyField(to=User, related_name='Post_likes')
     favourites = models.ManyToManyField(to=User,blank=True,related_name="favourite")
+    Tag1 = models.CharField(max_length=255,null=True,blank=True)
+    Tag2 = models.CharField(max_length=255,null=True,blank=True)
+    Tag3 = models.CharField(max_length = 255, null = True, blank = True)
+    Tag1_Name = models.CharField(max_length=255,null=True,blank=True)
+    Tag2_Name = models.CharField(max_length=255,null=True,blank=True)
+    Tag3_Name = models.CharField(max_length=255,null=True,blank=True)
+    users = models.ManyToManyField(User, related_name='users_hidden_from_post')
+    Created_date = models.DateTimeField(auto_now_add=True)
+    Updated_date = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.title
+    # def __str__(self):
+    #     return self.title
 
     def likesCount(self):
         return self.Likes.count()
@@ -34,22 +49,22 @@ class Post(models.Model):
 
 class People(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_verified = models.BooleanField(default=False)
+    OTP = models.CharField(max_length=6, null=True, blank=True)
+    following = models.ManyToManyField(to=User, related_name='following', blank=True)
     photo = models.ImageField(upload_to='profile_pics', blank=True,null=True)
     Phone_number = models.CharField(max_length=255,null=True,blank=True)
     Birth_Date = models.DateField(null=True,blank=True)
     Created_date = models.DateTimeField(auto_now_add=True)
     Updated_date = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return self.user.email
+    # def __str__(self):
+    #     return self.user.email
 
 
 class Images(models.Model):
     Post = models.ForeignKey(Post,on_delete=models.CASCADE)
     image = models.ImageField(upload_to='media/')
-    # Tag1 = models.CharField(max_length=255,null=True,blank=True)
-    # Tag2 = models.CharField(max_length=255,null=True,blank=True)
-    # Tag3 = models.CharField(max_length=255,null=True,blank=True)
 
 
 class Comment(models.Model):
@@ -61,5 +76,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment
+
+
 
 

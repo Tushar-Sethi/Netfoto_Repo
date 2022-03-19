@@ -7,5 +7,6 @@ admin.site.register(models.Category)
 admin.site.register(models.People)
 admin.site.register(models.Images)
 admin.site.register(models.Comment)
+admin.site.register(models.ProductAvailability)
 # admin.site.register(models.PostExtras)
 

@@ -5,21 +5,42 @@
   }
 
 .Index_main_Container{
+  /* background-color: rgb(231, 227, 221); */
     width: 40%;
     margin: 0 auto;
+    border-radius: 20px;
 
     /* background-color: red; */
 }
-
+.container12{
+  width: 90%;
+  margin:auto;
+}
 .Index_main_container p img{
     width: 100%;
     border-radius: 30px;
 }
 .Ad_Title_Desc{
     text-align: center;
+    margin-top: 80px;
+}
+.Ad_Title_Desc h3 a{
+  text-decoration: none;
+  color: black;
+}
+
+.post-description{
+  margin-top: 15px;
+  margin-bottom: 40px;
 }
 .Ad_Owner{
     text-align: center;
+}
+.swiper-wrapper{
+  padding-bottom: 40px;
+}
+.swiper-horizontal .swiper-pagination{
+  /* left:120px; */
 }
 
 .Ad_Owner a{
@@ -32,6 +53,7 @@
 .icons_data{
   display: flex;
   justify-content: space-around;
+  margin-bottom: 20px;
 
 }
 
@@ -50,10 +72,220 @@
   width: 30px;
   height: 30px;
 }
+.swiper .swiper-wrapper{
+  height: 60%;
+}
 .swiper .swiper-wrapper img{
   width:700px;
   height:500px;
 }
+
+
+
+
+.header_Image{
+  height:40px;
+  width:40px;
+  border-radius:50%;
+  background-color: black;
+  margin:auto;
+
+}
+.header_Image a{
+  color:white;
+  font-size:22px;
+  font-weight:bold;
+  margin-left:15px;
+  /* margin-top:10px; */
+  /* padding-top:20px; */
+  text-decoration: none;
+
+}
+.profile_image{
+  margin: auto;
+  /* background-color: aquamarine; */
+  height:40px;
+  width:40px;
+}
+.image_of_user{
+  height:40px;
+  width:40px;
+  border-radius:50%;
+}
+
+.username_user{
+  text-align: center;
+}
+.username_user a{
+  text-decoration: none;
+  color: black;
+}
+.specific_user_main_div{
+  margin-top:50px;
+  /* align-items: center; */
+  text-align: center;
+  /* margin-left:50px; */
+  /* margin-right:50px; */
+}
+.Ad-user-details{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.Ad-user-details .menu-button-post{
+  align-items: center;
+  /* margin-top:20px; */
+  /* margin-left:150px; */
+  cursor: pointer;
+}
+
+.Book_image_shadow{
+  /* margin-top:32px; */
+  /* box-shadow: -20px 20px 20px 0 rgba(0,0,0,0.3); */
+
+}
+
+#photo_Tag_Box img{
+  height:20px; width:20px; position:absolute; bottom:20px; right:20px; cursor:pointer;
+}
+
+/* Modal Box */
+.mt-100 {
+  margin-top: 100px
+}
+
+.modal-title {
+  font-weight: 900
+}
+.modal-header button{
+  padding:10px;
+}
+.modal-content {
+  border-radius: 13px
+}
+
+.modal-body {
+  color: #3b3b3b
+}
+
+.img-thumbnail {
+  border-radius: 33px;
+  width: 61px;
+  height: 61px;
+  cursor: pointer;
+}
+
+.modal-body .fa:before {
+  position: relative;
+  top: 13px
+}
+
+.smd {
+  width: 200px;
+  font-size: small;
+  text-align: center;
+}
+
+.modal-footer {
+  display: block
+}
+
+.ur {
+  border: none;
+  /* background-color: #e6e2e2; */
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px
+}
+
+.cpy {
+display: inline;
+width: 27px;
+  /* border: none; */
+  /* background-color: #e6e2e2; */
+  /* border-bottom-right-radius: 4px; */
+  /* border-top-right-radius: 4px; */
+  cursor: pointer
+}
+
+.modal-footer .fa::before{
+  position: relative;
+  /* top: 13px */
+  /* left:2px; */
+}
+
+
+
+.message {
+  font-size: 11px;
+  color: #ee5535
+}
+/* Till Here */
+
+.main_modal_box_post_menu{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.post_menu_common{
+  padding: 10px 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+.post_menu_common img{
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+}
+.post_menu_common a{
+  text-decoration: none;
+  color: #000;
+}
+.fifth_div{
+  display: flex;
+  justify-content: space-evenly;
+}
+.follow_post_div{
+  background-color:black; 
+  color:white;
+  padding: 10px 20px 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.message_modal_box{
+  visibility: hidden;
+  color:red;
+}
+.tag_box{
+  position:absolute; 
+  bottom:100px; 
+  left:80px; 
+  border:0.5px solid red; 
+  opacity:0.9; width:40%; 
+  word-wrap: break-word; 
+  background-color:black; 
+  color:white; 
+  padding:10px; 
+  visibility:hidden;
+}
+.tag_box h6
+{
+  font-weight: 800;
+  line-height: 1;
+}
+.tag_box p{
+  font-size: 13px;
+  line-height: 1;
+}
+.tag_box a{
+  text-decoration: none;
+  color:white;
+}
+
+
+
 
 @media screen and (max-width: 600px){
   .Index_main_Container{
@@ -63,4 +295,15 @@
     width:100%;
     height:400px;
   }
+  .swiper-button-next,
+  .swiper-button-prev{
+    visibility: hidden;
+  }
+
+  .tag_box{
+    bottom:40px;
+    left:40px;
+  }
+
+
 }

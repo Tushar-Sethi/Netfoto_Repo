@@ -61,3 +61,7 @@
   .width form button{
     border-radius: 20px;
   }
+  #username{
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }

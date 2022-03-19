@@ -12,3 +12,10 @@ class PostSerializer(serializers.Serializer):
 class CategorySerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     title = serializers.CharField(max_length=255)
+
+class ProductAvailabilitySerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    title = serializers.CharField(max_length=255)
+
+class peopleSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
