@@ -48,7 +48,9 @@ class Post(models.Model):
         return reverse('home') 
 
 class People(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,related_name='people')
+    Name = models.CharField(max_length=255,null=True)
+    # email = models.EmailField(max_length=255,null=False,unique=True,blank=False)
     is_verified = models.BooleanField(default=False)
     OTP = models.CharField(max_length=6, null=True, blank=True)
     following = models.ManyToManyField(to=User, related_name='following', blank=True)

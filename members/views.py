@@ -7,15 +7,31 @@ import math
 import random
 from django.conf import settings
 from django.core.mail import send_mail
+from django.http import JsonResponse
+from random_username.generate import generate_username
+import random
+import string
+import re
+
+from django.contrib.auth.hashers import make_password
 
 
 def login_user(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        user = User.objects.filter(username=username)
+        if(User.objects.filter(username=username).exists()):
+            user = User.objects.filter(username=username)
+        elif(User.objects.filter(email=username).exists()):
+            user = User.objects.filter(email=username)
+            username = user[0].username
+        else:
+            messages.success(request, ("Username or Email Does Not Exist"))
+            return redirect('register-user')
         Is_verified = user[0].people.is_verified
         if (Is_verified == True):
+            print(username)
+            print(password)
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -41,11 +57,15 @@ def generateOTP() :
          OTP += digits[math.floor(random.random() * 10)]
      return OTP
 
+def Random_Password(length):
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
 
 def logout_user(request):
     logout(request)
-    messages.success(request, ("You are now logged out"))
-    return redirect('login-in')
+    # messages.success(request, ("You are now logged out"))
+    return redirect('first')
 
 
 def register_user(request):
@@ -68,7 +88,7 @@ def register_user(request):
                 else:
                     user = User.objects.create_user(username=username, password=password, email=email, first_name=First_Name, last_name=Last_Name)
                     user.save()
-                    people = People.objects.create(user_id=user.id)
+                    people = People.objects.create(user_id=user.id,email=email)
                     people.save()
                     messages.success(request, ("Please Verify you email by entering the OTP sent to your email"))
                     OTP = generateOTP()
@@ -138,20 +158,143 @@ def User_Profile(request):
     if(request.user.is_authenticated):
         if request.method == 'POST':
                 user = request.user
+                user.first_name = request.POST['First_Name']
+                user.last_name = request.POST['Last_Name']
                 people = People.objects.get(user__username=user.username)
-                people.First_Name = request.POST['First_Name']
-                people.Last_Name = request.POST['Last_Name']
-                people.phone_number = request.POST['phone_number']
+                people.Phone_number = request.POST['Phone_Number']
                 people.Birth_Date = request.POST['Birth_Date']
-                people.photo = request.FILES['photo']
+                # people.photo = request.files['Profile_Photo']
+                people.photo = request.FILES['profile_photo']
+                user.save()
                 people.save()
                 messages.success(request, ("Profile Updated"))
                 return redirect('User_Profile')
         else:
             user = request.user
             profile = People.objects.get(user__username=user.username)
-            return render(request, 'registration/Profile.html', {'profile': profile})
+            profile_array={
+                'First_Name': user.first_name,
+                'Last_Name': user.last_name,
+                'phone_number': profile.Phone_number,
+                'Birth_Date': profile.Birth_Date,
+                'photo': profile.photo
+            }
+            return render(request, 'registration/Profile.html', context = {'profile': profile_array})
             
     else:
         return redirect('login-in')
+
+
+def first(request):
+    return render(request, 'registration/First_Page.html')
+
+
+def checkValidEmail(email):
+    regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+    if(re.fullmatch(regex, email)):
+        return True
+
+    else:
+        return False
+
+
+def CheckEmail(request):
+    if(request.method == 'POST'):
+        email = request.POST['email']
+        if(User.objects.filter(email=email).exists()):
+            return JsonResponse({'message': 'Login', 'status': 'success'})
+        else:
+            if(checkValidEmail(email)):
+                OTP = generateOTP()
+                send_verification_email(OTP, email)
+                username = generate_username()
+                # password = Random_Password(8)
+                password = '123'
+                user = User.objects.create_user(username=username, password=password, email=email)
+                user.save()
+                people = People.objects.create(user_id=user.id, OTP=OTP)
+                people.save()
+                return JsonResponse({'message': 'Register'})
+            else:
+                return JsonResponse({'message': 'Invalid Email', 'status': 'error'})
+    else:
+        return redirect('login-in')
         
+def check_OTP(request):
+    if(request.method == 'POST'):
+        email = request.POST['email']
+        OTP = request.POST['OTP']
+        people = People.objects.get(user__email=email)
+        if(people.OTP == OTP):
+            people.is_verified = True
+            people.save()
+            print('verified')
+            return JsonResponse({'message': 'Verified', 'status': 'success'})
+        else:
+            return JsonResponse({'message': 'Invalid OTP', 'status': 'error'})
+    else:
+        return redirect('login-in')
+
+def login_register(request):
+    if(request.method == 'POST'):
+        if 'login' in request.POST:
+            email = request.POST['email']
+            password = request.POST['password']
+            user = User.objects.get(email=email)
+            username = user.username
+            Is_verified = user.people.is_verified
+            if (Is_verified == True):
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    if request.GET.get('next', None):
+                        return redirect(request.GET['next'])
+                    return redirect('index')
+                else:
+                    messages.success(request, ("Invalid credentials"))
+                    return redirect('first')
+            else:
+                messages.success(request, ("You need to verify your email first"))
+                return redirect('verify-email', username=username)
+        elif 'register' in request.POST:
+            email = request.POST['email']
+            password1 = request.POST['register-Password']
+            password2 = request.POST['register-confirm-password']
+            name = request.POST['Name']
+            username = request.POST['username']
+            if(password1 == password2):
+                user = User.objects.filter(email=email)
+                user.update(username=username)
+                user1 = User.objects.get(username=username)
+                user1.set_password(password1)
+                user1.save()
+                people = People.objects.get(user__email=email)
+                people.Name = name
+                people.save()
+                if(people.is_verified == True):
+                    user = authenticate(request, username=username, password=password1)
+                    if user is not None:
+                        login(request, user)
+                        return redirect('index')
+                    else:
+                        messages.success(request, ("Invalid credentials"))
+                        # return redirect('first')
+                else:
+                    messages.success(request, ("You need to verify your email first"))
+                    # return redirect('verify-email', username=username)
+            else:
+                messages.success(request, ("Passwords do not match"))
+                return redirect('first')
+    return redirect('first')
+
+    
+def check_username(request):
+    if(request.method == 'POST'):
+        username = request.POST['username']
+        print(username)
+        if(User.objects.filter(username=username).exists()):
+            return JsonResponse({'message': 'Not Available', 'status': 'error'})
+        else:
+            return JsonResponse({'message': 'Available', 'status': 'success'})
+    else:
+        print('error')

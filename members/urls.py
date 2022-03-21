@@ -10,4 +10,9 @@ urlpatterns = [
     path('verify-email/<str:username>/ ', views.verify_email, name='verify-email'), 
     path('resend-email/', views.resend_email, name='resend-email'),
     path('profile/', views.User_Profile, name='User_Profile'),
+    path('first/', views.first, name='first'),
+    path('api/CheckEmail',views.CheckEmail,name='CheckEmail'),
+    path('api/checkOTP',views.check_OTP,name='checkOTP'),
+    path('login_register/', views.login_register, name='login_register'),
+    path('api/check_username',views.check_username,name="UsernameAvailability")
 ]

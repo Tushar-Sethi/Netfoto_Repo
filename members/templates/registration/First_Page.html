@@ -1,0 +1,126 @@
+
+{% extends 'Base.html'%}
+{% load static%}
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/First_Page.css' %}">
+{% endblock %}
+
+{% block title %}
+    List of Blogs
+{% endblock %}
+
+{% block content %}
+<div style="width:100vw; height:100vh;">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#e"
+    style = "justify-content: center; margin-left: 40%; margin-top: 15%;">
+
+    Let's Start
+  </button>
+</div>
+  
+  <div class="modal fade" id="e" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Continue with your Email</h5>
+          {% comment %} <button type="button" class="close" data-dismiss="modal" aria-label="Close"> {% endcomment %}
+            {% comment %} <span aria-hidden="true">&times;</span> {% endcomment %}
+          </button>
+        </div>
+        <div class="modal-body">
+            <!-- Form from here -->
+
+                <div class="container">
+                    <form action="{% url 'login_register' %}" method="POST">  
+                        {% csrf_token %}
+                        <div class="step step-1 active">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="Email" name="email">
+                            </div>
+                            <button type="button" class="next-btn btn btn-primary" onclick="checkEmail();">Next</button>
+                            <div id="Invalid_Email_Div">Invalid Email.</div>
+                        </div>
+
+                        <div class="step step-2">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="Password" name="password">
+                            </div>
+                                <button type="submit" class="prev-btn btn btn-primary" name="login" >Login</button>
+                        </div>
+
+                        <div class="step step-3">
+                            <div class="form-group">
+                                <label for="OTP">OTP</label>
+                                <input type="number" id="OTP" name="OTP">
+                            </div>
+                            <button type="button" class="prev-btn btn btn-warning">Back</button>
+                            <button type="button" class="btn btn-primary" onclick="verify_OTP();">Verify</button>
+                            <div id="Invalid_OTP_Div">Invalid OTP.</div>
+                        </div>
+
+                        <div class="step step-4">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="Password" id="register-Password" name="register-Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="register-confirm-password">Confirm Password</label>
+                                <input type="Password" id="register-confirm-password" name="register-confirm-password">
+                            </div>
+                            <button type="button" class="btn btn-primary" onclick="checkBothPasswords();">Next</button>
+                            <div id="Password_Mismatch_Div">Passwords Do not Match.</div>
+                            <div id="empty_Passwords">Password Field Can not be Empty</div>
+                        </div>
+                        
+                        <div class="step step-5">
+                            <div class="form-group">
+                                <label for="Name">Company Name/Full Name</label>
+                                <input type="text" id="Name" name="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" id="username" name="username">
+                                <div id="username_availability_available">User Name is Available</div>
+                                <div id="username_availability_taken">User Name is taken. Please Try any other username</div>
+                                <button class="btn btn-primary" type="button" onclick="username_availability();">Check Username Availability</button>
+                            </div>
+                            <button type="submit" class="btn btn-primary" name="register">Register</button>
+                            <div id="empty_fields_username_name">Username and Name Field Can not be Empty</div>
+                        </div>
+                    </form>
+                </div>
+              
+            <!-- Till Here -->
+
+
+
+
+          <!-- <input type="email" class="form-control" id="Email" aria-describedby="emailHelp" placeholder="Enter email"> -->
+        </div>
+        <div class="modal-footer">
+          <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+          {% comment %} <button type="button" class="btn btn-primary" onclick="checkEmail();">Next</button> {% endcomment %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="{% static 'FrontEnd1/js/First_Page.js' %}"></script>
+    <script>
+    var csrfToken = "{{ csrf_token }}";
+    var CheckEmailURL = "{% url 'CheckEmail' %}";
+    var VerifyOTPURL = "{% url 'checkOTP' %}";
+    var UsernameAvailabilityURL = "{% url 'UsernameAvailability' %}";
+    // var LoginURL = "{% url 'login-in' %}";
+</script>
+{% endblock %}

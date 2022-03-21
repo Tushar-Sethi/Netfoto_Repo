@@ -12,7 +12,8 @@
 <div class="container1 text-center">
 <h1>Search any Ad Post</h1>
 <form action="{% url 'search' %}" method="post">
-    <input type="text" name="search" placeholder="Search">
+    {% csrf_token %} 
+    <input type="text" name="search_text" placeholder="Search">
     <input type="submit" value="Search">
 </form>
 </div>

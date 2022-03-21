@@ -45,9 +45,10 @@
     </nav>
   </head>
   <body>
-    <button><a href="{% url 'login-in' %}">Login</a></button>
-    <button><a href="{% url 'logout-out' %}">Logout</a></button>
-    <button><a href="{% url 'register-user' %}">Signup</a></button>
+    {% comment %} <button><a href="{% url 'login-in' %}">Login</a></button> {% endcomment %}
+    <button class="btn btn-danger"><a href="{% url 'logout-out' %}" style="color:white; text-decoration:none">Logout</a></button>
+    {% comment %} <button><a href="{% url 'register-user' %}">Signup</a></button> {% endcomment %}
+    {% comment %} <button><a href="{% url 'first' %}">First</a></button> {% endcomment %}
 
     {% comment %} Messages {% endcomment %}
     {% if messages %}
@@ -59,9 +60,9 @@
         </div>
         {% endfor %}
     {% endif %}
-    {% if user.is_authenticated %}
+    {% comment %} {% if user.is_authenticated %}
     {{user.id}} Logged In
-    {% endif %}
+    {% endif %} {% endcomment %}
     {% comment %} Messages END {% endcomment %}
     {% block content %}
     {% endblock%}

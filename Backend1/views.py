@@ -7,14 +7,14 @@ from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import PostSerializer,CategorySerializer,ProductAvailabilitySerializer
-from django.db.models import Count, Exists, OuterRef
+from django.db.models import Count, Exists, OuterRef,Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from rest_framework import status
 from datetime import datetime,timezone
 # render Views
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def index(request):
     user_id = request.user.id
     posts =  Post.objects.exclude(users=request.user)\
@@ -93,15 +93,15 @@ def index(request):
 def demo(request):
     return render(request, template_name='Demo.html')
 
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def demo2(request):
     return render(request, template_name='Demo2.html')
 
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def Create_a_Post(request):
     return render(request, template_name='Create_a_Post.html')
 
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def Save_Post_TO_DB(request):
     # print(request.FILES)
     if(request.method == 'POST'):
@@ -128,7 +128,7 @@ def Save_Post_TO_DB(request):
     return render(request, template_name='index.html')
 
 
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def SpecificUser(request,pk):
     user_id = pk
     # user = User.objects.select_related().get(id=user_id)
@@ -177,7 +177,7 @@ def view_post(request,pk):
     #     print('error')
     #     return render(request, template_name='index.html')
 
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def favourite_post(request,pk):
     if request.user.is_authenticated:
         post = get_object_or_404(Post, pk=pk)
@@ -190,7 +190,7 @@ def favourite_post(request,pk):
     return redirect(request.META['HTTP_REFERER'])
     # return HttpResponseRedirect(reverse('view_post', args=(post.id,)))
 
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def comment_post(request,pk):
     if request.method == 'POST':
         post = get_object_or_404(Post, pk=pk)
@@ -203,17 +203,76 @@ def comment_post(request,pk):
     return render(request, template_name='index.html')
 
 
-@login_required(login_url='/members/login_me_in')
+@login_required(login_url='/members/first/')
 def search(request):
-    if request.method == 'POST':
-        search_text = request.POST.get('search_text')
-        if(search_text != ''):
-            search_results = Post.objects.filter(Q(title__icontains=search_text) | Q(description__icontains=search_text) | Q(Tags__icontains=search_text))
-            print(search_results)
-            return render(request, template_name='Search.html',context={'search_results':search_results})
-        else:
-            return redirect(request.META['HTTP_REFERER'])
-    return render(request, template_name='Search.html')
+    if(request.user.is_authenticated):
+        if request.method == 'POST':
+            search_text = request.POST.get('search_text')
+            if(search_text != ''):
+                user_id = request.user.id
+                search_results =  Post.objects.filter(Q(title__icontains = search_text) | Q(description__icontains = search_text))\
+                .select_related('user__people','ProductAvailability').prefetch_related('images_set','Likes')\
+                .annotate(comments_Count = Count('comments_post',distinct=True)).annotate(
+                    Count('Likes',distinct=True),is_liked=Exists(
+                    Post.Likes.through.objects.filter(
+                        post_id=OuterRef('pk'), user_id=user_id
+                    )
+                ),isSaved=Exists(
+                    Post.favourites.through.objects.filter(
+                        post_id=OuterRef('pk'), user_id=user_id
+                    ))
+                ).order_by('-id')
+
+                array = []
+                for post in search_results:
+                    if(post.user.people.following.through.objects.filter(people_id = post.user.people.id ,user_id=user_id).exists()):
+                        isFollowed = True
+                    else:
+                        isFollowed = False
+                    IsSaved = False
+                    if(post.isSaved == True):
+                        IsSaved = 'Saved'
+                    else:
+                        IsSaved = 'Save'
+                    d={}
+                    if((datetime.now(timezone.utc) - post.Created_date).days > 7):
+                        created_date = str((datetime.now(timezone.utc) - post.Created_date).days) + ' days ago'
+                    else:
+                        created_date = post.Created_date.strftime("%d %b %Y")
+                    d = {
+                        'post_id':post.id,
+                        'user_id':post.user_id,
+                        'current_user_id':user_id,
+                        'title' : post.title,
+                        'description':post.description,
+                        'Tag1':post.Tag1,
+                        'Tag2':post.Tag2,
+                        'Tag3':post.Tag3,
+                        'Tag1_Name':post.Tag1_Name,
+                        'Tag2_Name':post.Tag2_Name,
+                        'Tag3_Name':post.Tag3_Name,
+                        'people_photo':post.user.people.photo,
+                        # 'category':post.category,
+                        'userName':post.user.username.capitalize(),
+                        'images' : post.images_set.all(),
+                        'comments_count':post.comments_Count,
+                        'likesCount' : post.Likes__count,
+                        'isLiked':post.is_liked,
+                        'first_char':post.user.username[0].capitalize(),
+                        'product_availability':post.ProductAvailability,
+                        'created_at':created_date,
+                        'isSaved':post.isSaved,
+                        'IsSaved':IsSaved,
+                        'isFollowed':isFollowed
+                    }
+                    array.append(d)
+                # search_results = Post.objects.filter(Q(title__icontains = search_text) | Q(description__icontains = search_text)).select_related().prefetch_related('images_set','comments_post','comments_post__user')
+                return render(request, template_name='SearchResults.html',context={'post':array})
+            else:
+                return redirect(request.META['HTTP_REFERER'])
+        return render(request, template_name='Search.html')
+    else:
+        return redirect('members/login_me_in')
 
 
 # API's
@@ -314,14 +373,4 @@ def follow_user(request):
         else:
             people.following.add(current_user_id)
             return JsonResponse({"message":"Followed","status": status.HTTP_200_OK,'id':follow_this_user_id,'followstatus':'Unfollow'})
-
-
-
-        # people = People.following.objects.get(id=follow_this_user_id)
-        # if(people.following.filter(id=follow_this_user_id).exists()):
-        #     people.following.remove(follow_this_user_id)
-        #     return JsonResponse({"message":'Unfollowed',"status":status.HTTP_200_OK,'id':follow_this_user_id,'followstatus':'follow'})
-        # else:
-        #     people.following.add(follow_this_user_id)
-        #     return JsonResponse({"message":"Followed","status": status.HTTP_200_OK,'id':follow_this_user_id,'followstatus':'followed'})
     return JsonResponse({"message":"Not Allowed"})

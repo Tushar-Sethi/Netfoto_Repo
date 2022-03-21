@@ -1,2 +1,83 @@
-<h1>profile Page</h1>
-{{profile}}
+{% extends 'Base.html'%}
+{% load static%}
+
+{% block styles %}
+<link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/login.css' %}">
+
+{% endblock %}
+{% block title %}
+        Login to the Blog Page
+    {% endblock %}
+
+{% block content%}
+    <h1>Profile Page</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Update your Details</div>
+                    <div class="panel-body">
+                        <form class="form-horizontal" method="POST" action="" enctype="multipart/form-data">
+                            {%csrf_token%}
+                            <div class="form-group">
+                                <label for="First_Name" class="col-md-4 control-label">First Name</label>
+                                <div class="col-md-6">
+                                    <input id="First_Name" type="text" class="form-control" name="First_Name" value="{{profile.First_Name}}" required>
+                                </div>
+
+                                <label for="Last_Name" class="col-md-4 control-label">Last Name</label>
+                                <div class="col-md-6">
+                                    <input id="Last_Name" type="text" class="form-control" name="Last_Name" value="{{profile.Last_Name}}" required>
+                                </div>
+
+                                <label for="Phone_Number" class="col-md-4 control-label">Phone Number</label>
+                                <div class="col-md-6">
+                                    <input id="Phone_Number" type="text" class="form-control" name="Phone_Number" value="{{profile.phone_number}}">
+                                </div>
+
+                                <label for="Birth_Date" class="col-md-4 control-label">Birth Date</label>
+                                <div class="col-md-6">
+                                    <input id="Birth_Date" type="date" class="form-control" name="Birth_Date" value="{{profile.Birth_Date|date:'Y-m-d'}}">
+                                </div>
+
+                                <label for="Profile_Photo" class="col-md-4 control-label">Profile Photo</label>
+                                <div class="col-md-6">
+                                    <div id="profile_photo_current_div">
+                                        <img id="profile_photo_current" src="{{profile.photo.url}}" style="width:600px;"/>
+                                    </div>
+                                    <input id="Profile_Photo" type="file" class="form-control" name="profile_photo" onchange="preview_profile_photo()">
+                                </div>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function preview_profile_photo(){
+    let profile_photo = document.getElementById('Profile_Photo');
+    let imageContainer = document.getElementById("profile_photo_current_div");
+    imageContainer.innerHTML = "";
+    var i = profile_photo['files'][0];
+    let reader = new FileReader();
+    let figure = document.createElement("figure");
+    let figCap = document.createElement("figcaption");
+    figCap.innerText = '';
+    figure.appendChild(figCap);
+        reader.onload=()=>{
+            let img = document.createElement("img");
+            img.setAttribute("src",reader.result);
+            img.setAttribute("style","width:600px;");
+            figure.insertBefore(img,figCap);
+        }
+        imageContainer.appendChild(figure);
+        reader.readAsDataURL(i);
+}
+</script>
+{% endblock %}

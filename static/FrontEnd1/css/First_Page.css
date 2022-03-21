@@ -1,0 +1,28 @@
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    /* background-color: red; */
+}
+.step{
+    display: none;
+}
+.step.active{
+    display: block;
+}
+
+#Invalid_Email_Div,
+#Invalid_OTP_Div,
+#Password_Mismatch_Div,
+#empty_Passwords,
+#empty_fields_username_name,
+#username_availability_taken{
+    visibility:hidden;
+    color: red;
+}
+
+#username_availability_available{
+    visibility:hidden;
+    color: green;
+}
+

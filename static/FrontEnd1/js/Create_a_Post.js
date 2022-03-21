@@ -99,7 +99,7 @@ function preview(){
     // var count = 1;
     for(i of fileInput.files){
       var html2='';
-      console.log(i);
+      // console.log(i);
         let reader = new FileReader();
         let figure = document.createElement("figure");
         let figCap = document.createElement("figcaption");
