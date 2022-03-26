@@ -1,63 +1,205 @@
-{% extends 'base.html'%}
-{% load static%}
-
-{% block styles %}
-<link rel="stylesheet" type="text/css" href="{% static 'FrontEnd1/css/Specific_User_Page.css' %}">
-{% endblock %}
-
-{% block title %}
-    List of Blogs from specific User page
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html'%} {% load static%} {% block styles %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'FrontEnd1/css/Specific_User_Page.css' %}"
+/>
+{% endblock %} {% block title %} List of Blogs from specific User page 
+{% endblock %} {% block content %}
 <div class="specific_user_main_div">
-{% comment %} <h1>hello from the Specific User Page</h1> {% endcomment %}
+  <div class="top-header">
+    <div style="visibility: hidden;">This</div>
 
-{% comment %} {{Data}} {% endcomment %}
-{% comment %} <br> {% endcomment %}
-{% comment %} <hr> {% endcomment %}
-{% comment %} {{Data.user}} {% endcomment %}
-{% comment %} <br> {% endcomment %}
-{% comment %} <hr> {% endcomment %}
-{% comment %} {{Data.person}} {% endcomment %}
-    {% comment %} {{person.First_name}} {% endcomment %}
-    {% comment %} {{person.Last_name}} {% endcomment %}
-    {% comment %} {{person.Email}} {% endcomment %}
-    {% comment %} <hr> {% endcomment %}
-    {% comment %} {{Data.user.People.Birth_Date}} {% endcomment %}
+    <div class="user-details">
+      <div class="username_user">{{Data.username}}</div>
 
-
-
-    {% comment %} {{Data.person.Birth_Date}}
-    {{Data.person.user.username}}
-
-    {% if Data.person.photo %}
-    <div class="profile_image">
-        <img src="{{Data.person.photo.url}}" alt="No photo" class="image_of_user">
-        
-    </div>
-    {% else %}
-        <div class="header_Image">
-            <a href="#">{{Data.first_char}}</a>
-            
+      <div class="user_photo">
+        {% if Data.people_photo %}
+        <div class="profile_image">
+          <img src="{{Data.people_photo.url}}" alt="No photo" class="image_of_user"/>
         </div>
-    {% endif %}
-    <div class="username_user">
-        <h2>{{Data.person.user.username}}</h2>        
+        {% else %}
+        <div class="header_Image">
+          <p class="first_char">{{Data.first_char}}</p>
+        </div>
+        {% endif %}
+      </div>
     </div>
 
+    <div class="header-setting-img">
+      <img
+        src='{% static "FrontEnd1/Static_Images/CovrPage_Like_R.png" %}'
+        alt="" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"
+      />
+    </div>
+  </div>
+  <div class="star_ratings">
+    <div class="stars">
+      <i class="fa fa-star" aria-hidden="true"></i>
+      <i class="fa fa-star" aria-hidden="true"></i>
+      <i class="fa fa-star" aria-hidden="true"></i>
+      <i class="fa fa-star" aria-hidden="true"></i>
+      <i class="fa fa-star" aria-hidden="true"></i>
+    </div>
+    <div class="all_reviews">See 436 reviews</div>
+  </div>
 
-    <hr>
-    <hr>
-    {% for i in Data.user_Ads %}
-        {{i.title}}
-        {{i.description}}
-    <hr>
-    {% endfor %}
-</div> {% endcomment %}
-<h1> Coming Up Soon </h1>
-{% block scripts %}
+  <div class="numbers_div">
+    <div class="followers">
+      <a href="{% url 'followers' Data.user_id %}">
+        <div class="followers_number">{{Data.followers|length}}</div>
+        <div>followers</div>
+      </a>
+    </div>
+    <div class="following">
+      <a href="{% url 'following' Data.user_id %}">
+        <div class="following_number">{{Data.following|length}}</div>
+        <div>following</div>
+      </a>  
+    </div>
+    <div class="catalogues">
+      <a href="#">  
+        <div class="catalogues_number">{{Data.user_Ads|length}}</div>
+        <div>Catalogues</div>
+      </a>
+    </div>
+  </div>
+
+  {% if Data.user_id != Data.current_user_id %} 
+  <div class="buttons">
+    {% comment %} {% if Data.isFollowed == True %} {% endcomment %}
+    {% if Data.isFollowed == False %}
+      <div class="user_my_account" id="" onclick="Follow_Unfollow({{Data.user_id}});">Follow</div>
+    {% else %}
+      <div class="user_my_account" onclick="Follow_Unfollow({{Data.user_id}})">Unfollow</div>
+    {% endif %}
+    <div class="user_edit_profile">Contact</div>
+  </div>
+  {% else %}
+  <div class="buttons">
+    <div class="user_my_account">Account</div>
+    <div class="user_edit_profile">Edit Profile</div>
+  </div>
+  {% endif %}
+
+
+
+
+  <div class="description_user">
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid sed
+    maxime, quas voluptatibus qui asperiores esse adipisci cupiditate autem
+    neque quo iste architecto itaque modi ipsa perspiciatis nobis sit similique
+    quaerat vel illum porro rerum? Rem atque saepe quia! Culpa vitae incidunt
+    repellendus ab. Incidunt.
+  </div>
+
+    <div style="display: flex; justify-content: space-evenly; margin-top: 20px; margin-bottom: 20px;">
+        <button data-tab-target = "#Catalogs" class="active tab btn">Catalogs</button>
+        <button data-tab-target = "#About" class="tab btn">About</button>
+    </div>
+  <div class="Tabs_content">
+      <div id="Catalogs" data-tab-content class="active">
+          <div class="Catalogs">
+          {% for i in Data.user_Ads %}
+          <div style="text-align: center; margin-bottom:20px;">    
+                {% for z in i.images_set.all %}
+                    {%  if forloop.counter == 1 %}
+                        <div class="cover_image_catalogue">
+                            <a href="{% url 'view_post' i.id %}">
+                                <img src="{{z.image.url}}" alt="">
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <div class="catalogue_title">
+                    {{i.title}}
+                </div>
+            </div>
+            
+            {% endfor %}
+      </div>
+    </div>
+      <div id="About" data-tab-content>
+          <!-- {{Data.person}}{{Data.followers}} -->
+          <!-- {{Data.following}} -->
+        <p style="color:red; text-align: center;">Coming Up Soon</p>
+      </div>
+  </div>
+
+  <!-- Modal Box -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      {% if Data.user_id == Data.current_user_id %}
+      <div class="modal-body">
+        <div class="profile_setting">
+          <div class="first_div_profile_setting common_div_setting">
+            <div class="" onclick="copy_profile_link({{Data.user_id}});">
+              Copy Profile Link
+            </div>
+            <div class="">
+              <i class="fa fa-link" aria-hidden="true"></i>
+            </div>
+          </div>
+          <hr>
+          <div class="second_div_profile_setting common_div_setting">
+            <div>
+              Settings
+            </div>
+            <div>
+              <i class="fa fa-cog" aria-hidden="true"></i>
+            </div>
+          </div>
+          <hr>
+          <div class="third_div_profile_setting common_div_setting">
+            <div>
+              <a href="{% url 'saved_posts' Data.user_id %}">
+                Saved
+              </a>
+            </div>
+            <div>
+              <a href="{% url 'saved_posts' Data.user_id %}">
+                <i class="fa fa-bookmark" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+          <hr>
+          <div class="fourth_div_profile_setting common_div_setting">
+            <div>
+              <a href="{% url 'Liked_posts' Data.user_id %}">
+                Liked
+              </a>
+            </div>
+            <div>
+              <a href="{% url 'Liked_posts' Data.user_id %}">
+                <i class="fa fa-heart" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div style="color:red; text-align: end; margin-top:10px; visibility: hidden;" id="copy_link_profile">Link Copied</div>
+        <div class="close_setting">
+          <i class="fa fa-times" aria-hidden="true" data-bs-dismiss="modal"></i>
+        </div>
+      </div>
+      {% else %}
+      <div>In progress</div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+  <!-- Till Here -->
+
+
+</div>
 {% endblock %}
-
-
-{% endblock%}
+{% block scripts %} 
+<script src="{% static 'FrontEnd1/js/Specific_User_Page.js' %}"></script>
+<script type="text/javascript">
+  var follow_unfollow_user = "{% url 'API-FollowUser' %}";
+  var csrfToken = "{{ csrf_token }}";
+  $(document).ready(function(){
+    console.log('ready');
+  });
+</script>
+{% endblock %}

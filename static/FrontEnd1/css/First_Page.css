@@ -26,3 +26,12 @@
     color: green;
 }
 
+
+
+.modal-body .container form .input_Element{
+    border:none;
+    border-bottom: 1px solid rgb(24, 22, 22,0.8);
+}
+.modal-body .container form .input_Element:focus{
+    outline: none;
+}

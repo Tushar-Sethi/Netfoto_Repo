@@ -141,6 +141,7 @@ function LikePost(id){
 
   function Follow_Unfollow_user(id){
     console.log(id);
+    var multiple_elements = document.getElementsByClassName('follow_state_change_'+id);
     $.ajax({
       url: follow_unfollow_user,
       type: 'POST',
@@ -153,20 +154,13 @@ function LikePost(id){
       dataType: 'json',
       success: function(data){
         if(data.status == 200){
-          if(data.message == "Followed"){
-            document.getElementById('follow_state_change_' + data.id).innerHTML = 'Unfollow';
-            // document.getElementById('follow_status_' + data.id).innerHTML = data.followstatus;
-          }
-          else if(data.message == "Unfollowed"){
-            document.getElementById('follow_state_change_' + data.id).innerHTML = 'Follow';
-            // document.getElementById('follow_status_' + data.id).innerHTML = data.followstatus;
-          }
-          else{
-            console.log('Something went wrong');
+          for(var i=0; i < multiple_elements.length; i++){
+            // console.log(multiple_elements[i]);
+            multiple_elements[i].innerHTML = data.followstatus;
           }
         }
       }
-      });
+   });
   }
 
   function tag_box_show(id){
@@ -176,3 +170,61 @@ function LikePost(id){
   function hide_tag_box(id){
     document.getElementById('tag_box_'+id).style.visibility = 'hidden';
   }
+
+  function showcomments(id){
+    $.ajax({
+      url: getcomments,
+      type: 'GET',
+      data: {
+        'post_id': id,
+      },
+      dataType: 'json',
+      success: function(data){
+        // console.log(data);
+        if(data.status == 200){
+          console.log(data);
+          var div_comments = document.getElementById('comment_model_box_space_'+id)
+          console.log('comment_model_box_space_'+id)
+          // div_comments.innerHTML = '';
+          html = ''
+          for(var i=0; i<data.comments.length; i++){
+          html += '<div class="comment_box" style="display:flex;">\
+          <div style="margin-right:50px;">\
+            <img src="'+data.comments[i].people.photo+'" alt="No photo" style="height:60px; width:60px; border-radius:50%;">\
+          </div>\
+          <div>\
+            <div><p style="color:rgb(218, 33, 125); display:inline; font-size:22px;">'+data.comments[i].user.username+'</p><em> Says</em></div>\
+            <div style="font-size:25px;">' + data.comments[i].comment+'</div>\
+          </div>\
+        </div>\
+        <hr>'
+          } 
+          if(data.total_comments > 2){
+            html += '<a href="#"> Read all comments</a>'
+          }
+          div_comments.innerHTML = html; 
+        }
+      }
+    });
+  }
+
+  // function submit_comment(post_id){
+  //   var comment_div = document.getElementById('comment_model_box_space_'+post_id);
+  //   var comment_text = document.getElementById('comment_text_'+post_id).value;
+  //   $.ajax({
+  //     url: submit_comment,
+  //     type: 'POST',
+  //     headers: {
+  //       "X-CSRFToken": csrfToken
+  //     },
+  //     data: {
+  //       'post_id': post_id,
+  //       'comment': comment_text,
+  //     },
+  //     dataType: 'json',
+  //     success: function(data){
+  //       console.log(data);
+  //     }
+
+  //   });
+  // }

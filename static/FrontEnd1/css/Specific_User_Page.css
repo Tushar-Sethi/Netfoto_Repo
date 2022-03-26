@@ -1,4 +1,4 @@
-.header_Image{
+/* .header_Image{
     height:70px;
     width:70px;
     border-radius:50%;
@@ -18,7 +18,7 @@
 .profile_image{
     margin: auto;
     /* background-color: aquamarine; */
-    height:70px;
+    /* height:70px;
     width:70px;
 }
 .image_of_user{
@@ -33,7 +33,162 @@
 .specific_user_main_div{
     margin-top:50px;
     /* align-items: center; */
-    text-align: center;
+    /* text-align: center; */
     /* margin-left:50px; */
     /* margin-right:50px; */
+/* } */
+
+.username_user{
+    text-align: center;
+}
+
+.specific_user_main_div{
+    width: 50%;
+    margin:auto;
+}
+
+.top-header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-setting-img img{
+    height:30px;
+    width:30px;
+    cursor: pointer;
+}
+
+.user-details{
+    display: flex;
+    flex-direction: column;
+}
+.user_photo{
+    margin-top:60px;
+}
+.profile_image img{
+    height:50px;
+    width:50px;
+    border-radius:50%;
+}
+.header_Image{
+    background-color: black;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+.first_char{
+ margin-left: 30%;
+}
+
+
+.star_ratings{
+    text-align: center; 
+}
+.stars{
+    margin-top: 20px;
+}
+.all_reviews{
+    margin-top: 1px;
+}
+
+
+.numbers_div{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    text-align: center;
+    align-items: center;
+}
+.numbers_div a{
+    text-decoration: none;
+    color: black;
+}
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 20px;
+    text-align: center;
+    align-items: center;
+}
+
+.user_my_account,
+.user_edit_profile{
+    border:1px solid black;
+    padding: 7px 12px;
+    border-radius: 20px;
+    width: 15%;
+    cursor: pointer;
+}
+
+.description_user{
+    margin-top: 20px;
+    text-align: center;
+    text-justify: distribute;
+}
+
+[data-tab-content]{
+    display: none;
+}
+.active[data-tab-content]{
+    display: block;
+}
+.tab.active{
+    border-bottom: 2px solid black;
+    outline: none;
+
+}
+.Catalogs{
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.cover_image_catalogue img{
+    border-radius: 30px;
+    width:160px;
+    height:160px;
+
+}
+
+.profile_setting{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.profile_setting i{
+    margin-left:10px;
+}
+.profile_setting a{
+    text-decoration: none;
+    color: black;
+}
+.common_div_setting{
+    display: flex;
+    cursor: pointer;
+}
+.close_setting{
+    border:1px solid rgb(100, 97, 97);
+    display: inline-block;
+    margin-left:50%;
+    padding:10px 14px;
+    border-radius: 50%;
+    margin-top:10px;
+    cursor: pointer;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .specific_user_main_div{
+        width: 90%;
+    }
+    .user_my_account,
+.user_edit_profile{
+    width: 30%;
+}
 }

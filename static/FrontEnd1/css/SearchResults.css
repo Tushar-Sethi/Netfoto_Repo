@@ -1,0 +1,29 @@
+.search_button{
+    background-color: #000;
+    color: #fff;   
+    cursor: pointer;
+    padding:4px 25px;
+    border-radius: 20px;
+}
+.search_button:hover{
+    color: #fff;
+    background-color: #000;
+}
+#search_text{
+    width: 20%;
+    height: 30px;
+    border: none;
+    border-bottom: 1px solid black;
+    margin-right: 10px;
+    font-size: 14px;
+    color: #000;
+    text-align: center;
+    outline: none;
+}
+
+@media screen and (max-width: 768px) {
+    #search_text{
+        width: 80%;
+        margin-bottom: 20px;
+    }
+}

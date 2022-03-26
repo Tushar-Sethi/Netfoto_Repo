@@ -43,7 +43,12 @@
                                 <label for="Profile_Photo" class="col-md-4 control-label">Profile Photo</label>
                                 <div class="col-md-6">
                                     <div id="profile_photo_current_div">
+                                        {% if profile.photo %}
                                         <img id="profile_photo_current" src="{{profile.photo.url}}" style="width:600px;"/>
+                                        {% else %}
+                                        <img id="profile_photo_current" src="{% static 'FrontEnd1/Static_Images/Default_Profile_Photo.jpg' %}" style="width:200px;"/>
+                                        {% endif %}
+
                                     </div>
                                     <input id="Profile_Photo" type="file" class="form-control" name="profile_photo" onchange="preview_profile_photo()">
                                 </div>

@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .serializers import PostSerializer,CategorySerializer,ProductAvailabilitySerializer
+from .serializers import PostSerializer,CategorySerializer,ProductAvailabilitySerializer,UserSerializer,commentsSerializer,peopleSerializer
 from django.db.models import Count, Exists, OuterRef,Q
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -27,7 +27,17 @@ def index(request):
     ),isSaved=Exists(
         Post.favourites.through.objects.filter(
             post_id=OuterRef('pk'), user_id=user_id
-        ))
+        )),
+
+    #     isFollowed1=Exists(
+    #     People.objects.filter(
+    #         following_people_id = OuterRef('pk'), user_id=user_id
+    #     )
+    # )
+
+
+
+
         # ,
         # isFollowed=Exists(
         #     People.following.through.objects.filter(
@@ -55,15 +65,30 @@ def index(request):
             created_date = str((datetime.now(timezone.utc) - post.Created_date).days) + ' days ago'
         else:
             created_date = post.Created_date.strftime("%d %b %Y")
+
+        if(post.Tag1 != ''):
+            tag1 = post.Tag1
+        else:
+            tag1 = None
+        
+        if(post.Tag2 != ''):
+            tag2 = post.Tag2
+        else:
+            tag2 = None
+        
+        if(post.Tag3 != ''):
+            tag3 = post.Tag3
+        else:
+            tag3 = None
         d = {
             'post_id':post.id,
             'user_id':post.user_id,
             'current_user_id':user_id,
             'title' : post.title,
             'description':post.description,
-            'Tag1':post.Tag1,
-            'Tag2':post.Tag2,
-            'Tag3':post.Tag3,
+            'Tag1':tag1,
+            'Tag2':tag2,
+            'Tag3':tag3,
             'Tag1_Name':post.Tag1_Name,
             'Tag2_Name':post.Tag2_Name,
             'Tag3_Name':post.Tag3_Name,
@@ -84,10 +109,10 @@ def index(request):
             'created_at':created_date,
             'isSaved':post.isSaved,
             'IsSaved':IsSaved,
-            'isFollowed':isFollowed
+            'isFollowed':isFollowed,
+            # 'isFollowed1':post.isFollowed1,
         }
         array.append(d)
-    # print(array)
     return render(request, template_name='index.html',context={'post':array})
 
 def demo(request):
@@ -95,7 +120,107 @@ def demo(request):
 
 @login_required(login_url='/members/first/')
 def demo2(request):
-    return render(request, template_name='Demo2.html')
+    user_id = request.user.id
+    posts =  Post.objects.exclude(users=request.user)\
+    .select_related('user__people','ProductAvailability').prefetch_related('images_set','Likes')\
+    .annotate(comments_Count = Count('comments_post',distinct=True)).annotate(
+        Count('Likes',distinct=True),is_liked=Exists(
+        Post.Likes.through.objects.filter(
+            post_id=OuterRef('pk'), user_id=user_id
+        )
+    ),isSaved=Exists(
+        Post.favourites.through.objects.filter(
+            post_id=OuterRef('pk'), user_id=user_id
+        )),
+
+    #     isFollowed1=Exists(
+    #     People.objects.filter(
+    #         following_people_id = OuterRef('pk'), user_id=user_id
+    #     )
+    # )
+
+
+
+
+        # ,
+        # isFollowed=Exists(
+        #     People.following.through.objects.filter(
+        #         people_id=OuterRef('people_id'), user_id=user_id
+        #     )
+        # )
+    ).all().order_by('-id')
+    array = []
+    count = 0
+    for post in posts:
+        if(post.user.people.following.through.objects.filter(people_id = post.user.people.id ,user_id=user_id).exists()):
+            isFollowed = True
+        else:
+            isFollowed = False
+        # if(post.Likes.filter(id=user_id).exists()):
+        #     isLiked = True
+        # else:
+        #     isLiked = False
+        IsSaved = False
+        if(post.isSaved == True):
+            IsSaved = 'Saved'
+        else:
+            IsSaved = 'Save'
+        d={}
+        if((datetime.now(timezone.utc) - post.Created_date).days > 7):
+            created_date = str((datetime.now(timezone.utc) - post.Created_date).days) + ' days ago'
+        else:
+            created_date = post.Created_date.strftime("%d %b %Y")
+
+        if(post.Tag1 != ''):
+            tag1 = post.Tag1
+        else:
+            tag1 = None
+        
+        if(post.Tag2 != ''):
+            tag2 = post.Tag2
+        else:
+            tag2 = None
+        
+        if(post.Tag3 != ''):
+            tag3 = post.Tag3
+        else:
+            tag3 = None
+        d = {
+            'post_id':post.id,
+            'user_id':post.user_id,
+            'current_user_id':user_id,
+            'title' : post.title,
+            'description':post.description,
+            'Tag1':tag1,
+            'Tag2':tag2,
+            'Tag3':tag3,
+            'Tag1_Name':post.Tag1_Name,
+            'Tag2_Name':post.Tag2_Name,
+            'Tag3_Name':post.Tag3_Name,
+            'people_photo':post.user.people.photo,
+            # 'category':post.category,
+            'userName':post.user.username.capitalize(),
+            'images' : post.images_set.all(),
+            
+            # 'comments' : post.comments_post.select_related().prefetch_related().all(),
+            # 'comments_count': post.comments_post__count,
+            'comments_count':post.comments_Count,
+            'likesCount' : post.Likes__count,
+            # 'actualLikeCount':post.likesCount(),
+            # 'actualCommentCount':post.comments_post.count(),  
+            # 'almost':post.Likes.count(),
+            'isLiked':post.is_liked,
+            'first_char':post.user.username[0].capitalize(),
+            'product_availability':post.ProductAvailability,
+            'created_at':created_date,
+            'isSaved':post.isSaved,
+            'IsSaved':IsSaved,
+            'isFollowed':isFollowed,
+            # 'isFollowed1':post.isFollowed1,
+        }
+        array.append(d)
+        count = count + 1
+    return render(request, template_name='Demo2.html',context={'post':array,'count':count})
 
 @login_required(login_url='/members/first/')
 def Create_a_Post(request):
@@ -131,22 +256,28 @@ def Save_Post_TO_DB(request):
 @login_required(login_url='/members/first/')
 def SpecificUser(request,pk):
     user_id = pk
+    current_user_id = request.user.id
     # user = User.objects.select_related().get(id=user_id)
-    person = People.objects.select_related().get(user_id=user_id)
-    user_Ads = Post.objects.filter(user_id=user_id)
-    favourites = Post.objects.filter(favourites=user_id)
-    first_char = person.user.username[0].capitalize()
-    # print(first_char)
+    person = People.objects.select_related('user').get(user_id=user_id)
+    user_Ads = Post.objects.prefetch_related('images_set').filter(user_id=user_id).all()
+    saved_post = Post.objects.filter(favourites=user_id)
+    Liked = Post.objects.filter(Likes=user_id)
+    isFollowed = People.following.through.objects.filter(people_id = user_id ,user_id=current_user_id).exists()
     context={
-        # 'user':user,
+        'user_id':user_id,
+        'username':person.user.username.capitalize(),
+        'people_photo':person.photo,
+        'saved':saved_post,
+        'Liked':Liked,
+        'followers' : person.following.all(),
+        'following' : People.objects.filter(following=user_id).all(),
         'person':person,
         'user_Ads':user_Ads,
-        'favourites':favourites,
-        'first_char':first_char
+        'first_char':person.user.username[0].capitalize(),
+        'current_user_id':current_user_id,
+        'isFollowed':isFollowed,
     }
-    # print(context)
-    # data['person'] = person
-    # data['user_Ads'] = user_Ads
+    print(context)
     return render(request, template_name='Specific_User_Page.html',context={'Data':context})
 
 def view_post(request,pk):
@@ -220,9 +351,12 @@ def search(request):
                 ),isSaved=Exists(
                     Post.favourites.through.objects.filter(
                         post_id=OuterRef('pk'), user_id=user_id
-                    ))
-                ).order_by('-id')
-
+                    )),
+                    isFollowed1=Exists(
+                    People.objects.filter(
+                        following__post__id=OuterRef('pk'), user_id=user_id
+                    )
+                )).all().order_by('-id')
                 array = []
                 for post in search_results:
                     if(post.user.people.following.through.objects.filter(people_id = post.user.people.id ,user_id=user_id).exists()):
@@ -239,15 +373,30 @@ def search(request):
                         created_date = str((datetime.now(timezone.utc) - post.Created_date).days) + ' days ago'
                     else:
                         created_date = post.Created_date.strftime("%d %b %Y")
+
+                    if(post.Tag1 != ''):
+                        tag1 = post.Tag1
+                    else:
+                        tag1 = None
+                    
+                    if(post.Tag2 != ''):
+                        tag2 = post.Tag2
+                    else:
+                        tag2 = None
+                    
+                    if(post.Tag3 != ''):
+                        tag3 = post.Tag3
+                    else:
+                        tag3 = None
                     d = {
                         'post_id':post.id,
                         'user_id':post.user_id,
                         'current_user_id':user_id,
                         'title' : post.title,
                         'description':post.description,
-                        'Tag1':post.Tag1,
-                        'Tag2':post.Tag2,
-                        'Tag3':post.Tag3,
+                        'Tag1':tag1,
+                        'Tag2':tag2,
+                        'Tag3':tag3,
                         'Tag1_Name':post.Tag1_Name,
                         'Tag2_Name':post.Tag2_Name,
                         'Tag3_Name':post.Tag3_Name,
@@ -255,24 +404,57 @@ def search(request):
                         # 'category':post.category,
                         'userName':post.user.username.capitalize(),
                         'images' : post.images_set.all(),
+                        # 'comments' : post.comments_post.select_related().prefetch_related().all(),
+                        # 'comments_count': post.comments_post__count,
                         'comments_count':post.comments_Count,
                         'likesCount' : post.Likes__count,
+                        # 'actualLikeCount':post.likesCount(),
+                        # 'actualCommentCount':post.comments_post.count(),  
+                        # 'almost':post.Likes.count(),
                         'isLiked':post.is_liked,
                         'first_char':post.user.username[0].capitalize(),
                         'product_availability':post.ProductAvailability,
                         'created_at':created_date,
                         'isSaved':post.isSaved,
                         'IsSaved':IsSaved,
-                        'isFollowed':isFollowed
+                        'isFollowed':isFollowed,
+                        'isFollowed1':post.isFollowed1,
                     }
                     array.append(d)
-                # search_results = Post.objects.filter(Q(title__icontains = search_text) | Q(description__icontains = search_text)).select_related().prefetch_related('images_set','comments_post','comments_post__user')
-                return render(request, template_name='SearchResults.html',context={'post':array})
+                return render(request, template_name='SearchResults.html',context={'post':array,'search_text':search_text})
             else:
                 return redirect(request.META['HTTP_REFERER'])
         return render(request, template_name='Search.html')
     else:
         return redirect('members/login_me_in')
+
+
+def Liked_posts(request,pk):
+    user_id = pk
+    post = Post.objects.filter(Likes__id=user_id).all()
+    return render(request, template_name='LikedPosts.html',context={'post':post})
+
+def saved_posts(request,pk):
+    user_id = pk
+    post = Post.objects.filter(favourites__id=user_id).all()
+    return render(request, template_name='SavedPosts.html',context={'post':post})
+
+
+
+def followers(request,pk):
+    user_id = pk
+    user = get_object_or_404(User, pk=user_id)
+    people = user.people
+    followers = people.following.all()
+    return render(request, template_name='followersList.html',context={'followers':followers})
+
+def following(request,pk):
+    user_id = pk
+    user = get_object_or_404(User, pk=user_id)
+    people = user.people
+    following = People.objects.filter(following=user_id).all()
+    return render(request, template_name='followingList.html',context={'following':following})
+
 
 
 # API's
@@ -374,3 +556,17 @@ def follow_user(request):
             people.following.add(current_user_id)
             return JsonResponse({"message":"Followed","status": status.HTTP_200_OK,'id':follow_this_user_id,'followstatus':'Unfollow'})
     return JsonResponse({"message":"Not Allowed"})
+
+
+@api_view(['GET'])
+def get_comments(request):
+    if request.method == 'GET':
+        post_id = request.GET.get('post_id')
+        comments = Comment.objects.filter(post_id=post_id).select_related('user','post','user__people').order_by('-Created_date')[:2]
+        serializer = commentsSerializer(comments, many=True)
+
+        total_comments = Comment.objects.filter(post_id=post_id).count()
+        print(total_comments)
+
+        return Response({'comments':serializer.data,'status':status.HTTP_200_OK,'id':post_id,'total_comments':total_comments})
+    return Response({"message":"Not Allowed"})

@@ -164,7 +164,10 @@ def User_Profile(request):
                 people.Phone_number = request.POST['Phone_Number']
                 people.Birth_Date = request.POST['Birth_Date']
                 # people.photo = request.files['Profile_Photo']
-                people.photo = request.FILES['profile_photo']
+                profile_photo = request.FILES.get('profile_photo')
+                print(profile_photo)
+                if(profile_photo != None):
+                    people.photo = request.FILES['profile_photo']
                 user.save()
                 people.save()
                 messages.success(request, ("Profile Updated"))

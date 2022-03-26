@@ -52,6 +52,7 @@
 
 
 .icons_data{
+    margin-top:70px;
   display: flex;
   justify-content: space-around;
   margin-bottom: 20px;
@@ -79,11 +80,14 @@
 }
 .swiper .swiper-wrapper img{
   width:100%;
-  height:700px;
+  /* height:700px; */
 }
 
 .main_Image{
+    width: 100%;
+    height:500px;
   object-fit: cover;
+  background-color: white;
 }
 
 .header_Image{
@@ -147,7 +151,24 @@
   /* box-shadow: -20px 20px 20px 0 rgba(0,0,0,0.3); */
 
 }
+.tags{
+  /* display:none; */
+  position:absolute;
+  cursor: pointer; 
+  z-index:999;
+  min-width: 90%;
+  min-height:300px;
+  top:40px;
+  /* background-color: red; */
+}
 
+.tags img{
+  width: 25px;
+  height: 25px;
+  /* top:40px; */
+  margin-left:100%;
+  margin-top: 70%;
+}
 #photo_Tag_Box img{
   height:20px; width:20px; position:absolute; bottom:20px; right:20px; cursor:pointer;
 }
@@ -263,8 +284,8 @@ width: 27px;
 }
 .tag_box{
   position:absolute; 
-  bottom:100px; 
-  left:80px; 
+  /* bottom:100px;  */
+  margin-left:20px; 
   border:0.5px solid red; 
   opacity:0.9; width:40%; 
   word-wrap: break-word; 
@@ -272,6 +293,7 @@ width: 27px;
   color:white; 
   padding:10px; 
   visibility:hidden;
+  margin-top:-146px;
 }
 .tag_box h6
 {
@@ -302,9 +324,22 @@ width: 27px;
   }
 
   .tag_box{
-    bottom:40px;
-    left:40px;
+    
+    margin-top:0px;
   }
 
-
+  .tag_box h6
+{
+  font-weight: 300;
+  /* line-height: 1; */
+}
+.tags{
+  /* background-color: red; */
+  height: 80%;
+  width: 80%;
+}
+.tags .tag_box{
+  /* height:90% */
+  width: 90%;
+}
 }

@@ -1,5 +1,6 @@
 function checkEmail(){
     var email = document.getElementById("Email").value;
+    $('#preloader').show();
     $.ajax({
         url: CheckEmailURL,
         type: "POST",
@@ -30,13 +31,17 @@ function checkEmail(){
                   }, 2000);
             }
             // Disable the NExt Button here
-        }
+        },
+        complete: function(){
+            $('#preloader').hide();
+          }
     });
 }
 
 function verify_OTP(){
     var email = document.getElementById("Email").value;
     var OTP = $("#OTP").val();
+    $('#preloader').show();
     $.ajax({
         url: VerifyOTPURL,
         type: "POST",
@@ -62,7 +67,10 @@ function verify_OTP(){
                   }, 2000);
                 
             }
-        }
+        },
+        complete: function(){
+            $('#preloader').hide();
+          }
     });
 }
 
@@ -90,7 +98,6 @@ function checkBothPasswords(){
 
 function username_availability(){
     var username = document.getElementById("username").value;
-    console.log(username);
     $.ajax({
         url: UsernameAvailabilityURL,
         type: "POST",
@@ -108,19 +115,37 @@ function username_availability(){
                 document.getElementById("username_availability_available").style.visibility = "visible";
                 setTimeout(function () {
                     document.getElementById("username_availability_available").style.visibility = 'hidden';
-                  }, 5000);
+                  }, 2000);
             }
             else if(data.message == "Not Available")
             {
                 document.getElementById("username_availability_taken").style.visibility = "visible";
                 setTimeout(function () {
                     document.getElementById("username_availability_taken").style.visibility = 'hidden';
-                  }, 5000);
+                  }, 2000);
             }
         }
     });
 
 }
 
+var typingTimer;                //timer identifier
+var doneTypingInterval = 500;  //time in ms, 5 seconds for example
+var $input = $('#username');
 
+//on keyup, start the countdown
+$input.on('keyup', function () {
+  clearTimeout(typingTimer);
+  typingTimer = setTimeout(doneTyping, doneTypingInterval);
+});
+
+//on keydown, clear the countdown 
+$input.on('keydown', function () {
+  clearTimeout(typingTimer);
+});
+
+//user is "finished typing," do something
+function doneTyping() {
+    username_availability();
+}
 

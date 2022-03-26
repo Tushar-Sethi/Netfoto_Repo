@@ -4,6 +4,13 @@
     width: 40%;
 }
 
+#preloader{
+  background: #000 url(../Preloader/Loader1.gif) no-repeat center center;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  z-index: 10000;
+}
 
 /* .navbar {
     background-color: #333;
