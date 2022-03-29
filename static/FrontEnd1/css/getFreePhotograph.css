@@ -1,0 +1,47 @@
+.main_free_photograph_form_div{
+    width:40%;
+    margin:auto;
+    background-color: rgb(237, 243, 248);
+    padding:40px;
+    border-radius: 40px;
+    box-shadow: 0px 0px 20px rgb(0, 0, 0);
+    /* text-align: center; */
+}
+.main_free_photograph_form_div button{
+    margin-left: 40%;
+    background-color: black;
+    color: white;
+    padding:7px 12px;
+    border-radius: 30px;
+    /* background-color: red; */
+}
+.main_free_photograph_form_div button:hover{
+    background-color: rgb(0, 0, 0);
+    color: white;
+}
+
+.main_free_photograph_form_div h1{
+    text-align: center;
+}
+
+.main_free_photograph_form_div form input[type=text]{
+    width:100%;
+    margin:auto;
+    margin:10px 0px;
+    /* outline: 1px solid skyblue; */
+    border:1px solid black;
+    border-radius: 7px;
+    padding:7px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+
+@media screen and (max-width: 600px){
+    .main_free_photograph_form_div{
+        width:90%;
+
+    }
+}

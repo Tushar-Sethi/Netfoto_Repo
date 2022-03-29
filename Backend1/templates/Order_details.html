@@ -1,0 +1,263 @@
+{% extends 'Base.html'%} {% load static%} {% block styles %}
+<link rel="stylesheet" href="{% static 'FrontEnd1/css/Order_details.css' %}" />
+{% endblock %} {% block title %} Order Details {% endblock %} 
+{% block content %}
+<h1>Order Details</h1>
+
+<div class="order_details">
+  <div class="order_details_form_div">
+    <form method="POST" action="" id="order_details_form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="product-details">What's your Product</label>
+        <input
+          type="text"
+          name="product-name"
+          placeholder="Enter your Product type"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <h4>Select No of products</h4>
+        <input
+          type="radio"
+          name="select"
+          id="option_1"
+          class="radio-input"
+          value="1"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_2"
+          class="radio-input"
+          value="2"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_3"
+          class="radio-input"
+          value="3"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_4"
+          class="radio-input"
+          value="4"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_5"
+          class="radio-input"
+          value="5"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_6"
+          class="radio-input"
+          value="6"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_7"
+          class="radio-input"
+          value="7"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_8"
+          class="radio-input"
+          value="8"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_9"
+          class="radio-input"
+          value="9"
+        />
+        <input
+          type="radio"
+          name="select"
+          id="option_10"
+          class="radio-input"
+          value="10"
+        />
+
+        <label for="option_1" class="option_1 label_style"
+          ><div class="label_text">1</div></label
+        >
+        <label for="option_2" class="option_2 label_style"
+          ><div class="label_text">2</div></label
+        >
+        <label for="option_3" class="option_3 label_style"
+          ><div class="label_text">3</div></label
+        >
+        <label for="option_4" class="option_4 label_style"
+          ><div class="label_text">4</div></label
+        >
+        <label for="option_5" class="option_5 label_style"
+          ><div class="label_text">5</div></label
+        >
+        <label for="option_6" class="option_6 label_style"
+          ><div class="label_text">6</div></label
+        >
+        <label for="option_7" class="option_7 label_style"
+          ><div class="label_text">7</div></label
+        >
+        <label for="option_8" class="option_8 label_style"
+          ><div class="label_text">8</div></label
+        >
+        <label for="option_9" class="option_9 label_style"
+          ><div class="label_text">9</div></label
+        >
+        <label for="option_10" class="option_10 label_style"
+          ><div class="label_text">10</div></label
+        >
+      </div>
+
+      <div class="form-group">
+        <h4>Select no of views per product</h4>
+
+        <input
+          type="radio"
+          name="select_view"
+          id="option_1_view"
+          class="radio-input"
+          value="1"
+        />
+        <input
+          type="radio"
+          name="select_view"
+          id="option_2_view"
+          class="radio-input"
+          value="2"
+        />
+        <input
+          type="radio"
+          name="select_view"
+          id="option_3_view"
+          class="radio-input"
+          value="3"
+        />
+
+        <label for="option_1_view" class="option_1_view label_style"
+          ><div class="label_text">1</div></label
+        >
+        <label for="option_2_view" class="option_2_view label_style"
+          ><div class="label_text">2</div></label
+        >
+        <label for="option_3_view" class="option_3_view label_style"
+          ><div class="label_text">3</div></label
+        >
+      </div>
+
+      <div class="form-group">
+        <h4>Tell us how would you send your products</h4>
+        <div class="send_products">
+          <label for="hand_deliver" class="label_sned_products mb-2"
+            >Hand Deliver</label
+          >
+          <input
+            type="radio"
+            name="send_products_name"
+            id="hand_deliver"
+            value="Hand deliver"
+            class="mb-2"
+          />
+        </div>
+        <hr>
+        <div class="send_products">
+          <label for="arrange_yourself" class="label_sned_products mb-2"
+            >arranged Yourself</label
+          >
+          <input
+            type="radio"
+            name="send_products_name"
+            id="arrange_yourself"
+            value="arraynge Yourself"
+            class="mb-2"
+          />
+        </div>
+        <hr>
+      </div>
+
+      <div class="form-group">
+          <h4>How should we send your products back after photography</h4>
+        <div class="send_products_back">
+          <label for="pick_up" class="label_send_products_back mb-2"
+            >we would pick up by ourselves</label
+          >
+          <input
+            type="radio"
+            name="send_products_back_name"
+            id="pick_up"
+            value="we would pick up by ourselves"
+            class="mb-2"
+          />
+        </div>
+        <hr>
+        <div class="send_products_back">
+          <label for="courier" class="label_send_products_back mb-2"
+            >Return it through a courier service on payable basis</label
+          >
+          <input
+            type="radio"
+            name="send_products_back_name"
+            id="courier"
+            value="Return it through a courier service on payable basis"
+            class="mb-2"
+          />
+        </div>
+        <hr>
+        <div class="send_products_back">
+          <label for="Donate" class="label_send_products_back mb-2"
+            >No need to return the products. Donate it or self use</label
+          >
+          <input
+            type="radio"
+            name="send_products_back_name"
+            id="Donate"
+            value="No need to return the products."
+            class="mb-2"
+          />
+        </div>
+        <hr>
+      </div>
+
+      <div class="form-group">
+        <h4>
+          Mention if your have any specification relating your product
+          photography
+        </h4>
+        <textarea
+          name="specifications_product_photography"
+          id=""
+          cols="40"
+          rows="3"
+          style="width: 90%"
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <h4>Note our studio address for sending your products</h4>
+        <h6><b>CovrPage</b></h6>
+        619, Udyog vihar, Phase 5 Gurugram, Haryana-122001<br />
+        India
+      </div>
+
+      <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %} {% block scripts %}
+<script src="{% static 'FrontEnd1/js/Order_details.js' %}"></script>
+{% endblock %}

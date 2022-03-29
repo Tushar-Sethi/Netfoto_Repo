@@ -18,6 +18,14 @@ urlpatterns = [
     path('Saved/<int:pk>/',views.saved_posts,name='saved_posts'),
     path('Followers/<int:pk>/',views.followers,name='followers'),
     path('Following/<int:pk>/',views.following,name='following'),
+    path('getFreePhotos/',views.getFreePhotos,name='Free_photograph'),
+    path('getFreePhotograph/',views.getFreePhotograph,name='Free_photograph_form'),
+    path('unlock-free-photos/',views.unlock_free_photos_post_ad,name='unlock_free_photos_post_ad'),
+    path('order-details/',views.order_details,name='photography_order_details'),
+    path('order-confirmed/',views.order_confirmed,name='photography_order_confirmed'),
+    path('no-new-photos/',views.come_back_later,name='come_back_later'),
+    path('new-post-or-not/',views.Another_Post_or_Not,name='Another_Post_or_Not'),
+    
     
 
 

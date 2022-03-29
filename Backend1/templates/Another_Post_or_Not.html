@@ -1,0 +1,19 @@
+{% extends 'Base.html'%} {% load static%} {% block styles %}
+<link rel="stylesheet" href="{% static 'FrontEnd1/css/Order_details.css' %}" />
+{% endblock %} {% block title %} Order Details {% endblock %} 
+{% block content %}
+    want to add a new post or want to continue?
+
+    <a href="{% url 'unlock_free_photos_post_ad' %}">
+    <button>
+            post a new ad
+        </button>
+    </a>
+
+    <a href="{% url 'photography_order_details' %}">
+    <button>
+            continue without posting a new ad
+        </button>
+    </a>
+{% endblock %}
+

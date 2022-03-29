@@ -1,0 +1,37 @@
+.main_div_free_photos{
+    width:40%;
+    margin:auto;
+    text-align: center;
+}
+
+.instructions{
+    
+    display: flex;
+    flex-direction: column;
+}
+
+div.instructions > * {
+    margin-top:50px;
+
+}
+.instructions-main-div{
+    background-color: black;
+    border-radius: 20px;
+    padding:30px 0px;
+    color:white;
+}
+.free_photos_note{
+    width:90%;
+    margin:auto;
+    margin-top:50px;
+    margin-bottom: 50px;
+}
+.Note h4{
+    margin-top:40px;
+}
+@media screen and (max-width: 600px){
+    .main_div_free_photos{
+        width:90%;
+        /* background-color: aquamarine; */
+    }
+}

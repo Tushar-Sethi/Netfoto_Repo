@@ -29,6 +29,7 @@ class Post(models.Model):
     favourites = models.ManyToManyField(to=User,blank=True,related_name="favourite")
     Tag1 = models.CharField(max_length=255,null=True,blank=True)
     Tag2 = models.CharField(max_length=255,null=True,blank=True)
+    product_details = models.CharField(max_length=1000,null=True,blank=True)
     Tag3 = models.CharField(max_length = 255, null = True, blank = True)
     Tag1_Name = models.CharField(max_length=255,null=True,blank=True)
     Tag2_Name = models.CharField(max_length=255,null=True,blank=True)
@@ -57,6 +58,10 @@ class People(models.Model):
     photo = models.ImageField(upload_to='profile_pics', blank=True,null=True)
     Phone_number = models.CharField(max_length=255,null=True,blank=True)
     Birth_Date = models.DateField(null=True,blank=True)
+    step_1 = models.BooleanField(default=False)
+    step_2 = models.BooleanField(default=False)
+    step_3 = models.BooleanField(default=False)
+
     Created_date = models.DateTimeField(auto_now_add=True)
     Updated_date = models.DateTimeField(auto_now=True)
 
@@ -79,6 +84,30 @@ class Comment(models.Model):
     def __str__(self):
         return self.comment
 
+
+
+
+class ValidateCompany(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    Company_Name = models.CharField(max_length=255,null=True)
+    GST_number = models.CharField(max_length=255,null=True)
+    Company_Address1 = models.CharField(max_length=255,null=True)
+    Company_Address2 = models.CharField(max_length=255,null=True)
+    City = models.CharField(max_length=255,null=True)
+    State = models.CharField(max_length=255,null=True)
+    pinCode = models.CharField(max_length=255,null=True)
+    About = models.CharField(max_length=255,null=True)
+
+class product_details(models.Model):
+    people = models.ForeignKey(People, on_delete=models.CASCADE)
+    Product_Name = models.CharField(max_length=255,null=True)
+    no_of_products = models.IntegerField(null=True)
+    no_of_views = models.IntegerField(null=True)
+    send_products = models.CharField(max_length=255,null=True)
+    send_products_back = models.CharField(max_length=255,null=True)
+    product_additional_specifications = models.TextField(null=True)
+    orderID = models.CharField(max_length=255,null=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
 
 

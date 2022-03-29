@@ -215,11 +215,13 @@
     
       <div style="position: relative;">
         <div class="single-item flipping{{ forloop.counter0 }}" id="flipbook">
+          
           {% for image in i.images %}
           <div>
             <img class="main_Image" src="{{image.image.url}}" alt="hello"/>
           </div>
           {% endfor %}
+          
         </div>
 
         {% if i.Tag1 is not none %}
@@ -300,6 +302,13 @@
         <p class="para-img{{forloop.counter0}}" style="color:black; margin-left:50%;">1 </p>
         <p class="" style="color:blac; display: inline;">  &nbsp/ {{i.images|length}}</p>
       </div>
+      
+
+      <button class="Previous_button btn" onclick="pagedown({{forloop.counter0}})"><i class="fa fa-angle-left" aria-hidden="true"></i>
+      </button>
+      <button class="Next_button btn" onclick="pageup({{forloop.counter0}})"><i class="fa fa-angle-right" aria-hidden="true"></i>
+      </button>
+
     </div>
 
         
@@ -499,7 +508,7 @@
 {% block scripts %}
 <script src="{% static 'FrontEnd1/js/Main.js' %}"></script>
 <script src="{% static 'FrontEnd1/js/Common.js' %}"></script>
-
+{% comment %} <script src="https://hammerjs.github.io/dist/hammer.js"></script> {% endcomment %}
 <script src="{% static 'FrontEnd1/js/jquery.min.1.7.js' %}"></script>
 <script src="{% static 'FrontEnd1/js/turn.min.js' %}"></script>
 
@@ -538,38 +547,72 @@
     //var para_Img = document.getElementsByClassName("para-img");
     //$('.para-img').innerText = 'Hello There from console';
     for(var i =0 ; i < total_posts ; i++){
-      //para_Img[i].innerText = 'Hello There from console'+i;
-      //console.log($('.flipping'+i).turn('page'));
-      $('.flipping'+i).turn({
+      var flipbook = $('.flipping'+i);
+      
+      flipbook.turn({
         autoCenter: true,
         display:'single',
         width: "100%",
         height: 500,
-        duration: 1500,
+        duration: 1200,
         acceleration: true,
         gradients: true,
+        next: '.nextBtn'+i,
         when: {
           turning: function(event, page, pageObject) {
             var L = event.target.className.split(' ')[1].split("")
             var Z = L[L.length-1]
             document.getElementsByClassName("para-img"+Z)[0].innerText = page;
-            
-            
           }
         }
-      });
-      //array_of_para.push(document.getElementsByClassName("para-img"+i));
-      //console.log(document.getElementsByClassName("para-img"+i));
-      // $('.flipping'+i).bind('turning', function(event, page, view,i) {
-      //   console.log('Event->',event)
-      //   console.log('Page->',page)
-      //   console.log('View -> ',view);
-      //   console.log('I Value',i)
-      //   //array_of_para[i].innerText = page;
-      //   //document.getElementsByClassName("para-img"+i)[0].innerText = page;
-      //   console.log(page)
-      // });
-    }
+        
   });
+    }
+
+    
+  });
+
+
+function pageup(id){
+  $('.flipping'+id).turn("next");
+}
+
+function pagedown(id){
+  $('.flipping'+id).turn("previous");
+}
 </script>
+{% comment %} <script>
+  var total_posts = 6;
+  for(var i =0 ; i < total_posts ; i++){
+  var myElement = document.getElementsByClassName('flipping'+i);
+
+
+// create a simple instance
+// by default, it only adds horizontal recognizers
+var mc = new Hammer(myElement[0]);
+
+// listen to events...
+mc.on("panleft panright tap press", function(ev) {
+  if(ev.type == "panleft"){
+    var L = ev.srcEvent.path[4].className.split(' ')[1].split("");
+    var Z = L[L.length-1]
+
+    console.log(Z)
+    pageup(Z);
+  }
+  else if(ev.type == "panright"){
+    var L = ev.srcEvent.path[4].className.split(' ')[1].split("");
+    var Z = L[L.length-1]
+    console.log(Z)
+    pagedown(Z);
+  }
+  else if(ev.type == "tap"){
+    console.log("tap")
+  }
+  else if(ev.type == "press"){
+    console.log("press")
+  }
+});
+}
+</script> {% endcomment %}
 {% endblock %}

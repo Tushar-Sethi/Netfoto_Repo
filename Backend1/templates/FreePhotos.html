@@ -1,0 +1,89 @@
+{% extends 'base.html'%}
+{% load static%}
+{% block styles %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'FrontEnd1/css/getFreePhoto.css' %}"
+/>
+{% endblock %} 
+
+{% block title %} 
+  Get Free Photos
+{% endblock %}
+    
+{% block content %}
+<div class="main_div_free_photos">
+Unlock Your <br><b>10 Free </b><br>Product Photos
+
+<div style="margin:20px 0px;">
+    <a href="{% url 'Free_photograph_form' %}">
+        <button class="btn btn-primary" >Claim your Photos Now</button>
+    </a>
+</div>
+<div class="instructions-main-div">
+<h2>How it works</h2>
+<div class="instructions">
+        <div>
+            <h4>1</h4>
+            <h4>Provide your company details<br> with GST Number</h4>
+        </div>
+        <div>
+            <h4>2</h4>
+            <h4>Post an instant<br> Catalog on CovrPage</h4>
+        </div>
+        <div>
+            <h4>3</h4>
+            <h4>Place your free order <br>and give some specifications</h4>
+        </div>
+        <div>
+            <h4>4</h4>
+            <h4>Send your product to us. <br>We would do the photography <br>and mail images to you.</h4>
+        </div>
+        <div>
+            <h4>5</h4>
+            <h4>After Photography, we would <br>send back your Products.</h4>
+        </div>
+    </div>
+</div>
+
+
+<div class="free_photos_note">
+    <h2>Please Note</h2>
+    <div class="Note">
+            <div>
+                <h4>1</h4>
+                <h5>The photography done would be <br>only on white background.</h5>
+            </div>
+            <div>
+                <h4>2</h4>
+                <h5> Maximum upto 3 views per product <br>would be provided.</h5>
+            </div>
+            <div>
+                <h4>3</h4>
+                <h5>You would need to send the products to our studios at your own cost. You can even hand deliver to our studio in Gurugram. Also if you want us to send back the products by courier, you would need to pay for the courier cost yourself.</h5>
+            </div>
+            <div>
+                <h4>4</h4>
+                <h5>Apart from the product, no human models, props or any additional supporting material would be used for the photographs.</h5>
+            </div>
+            <div>
+                <h4>5</h4>
+                <h5>If you wish to order any other style of apart from the details mentioned in the above points, or you want more products to be photographed, you can write to us once you have ordered your 10 free photographs. A notes section would appear at the end of free order placement.</h5>
+            </div>
+        </div>
+    </div>
+    
+
+<div class="free_photos_note">
+
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'FrontEnd1/js/getFreePhoto.js' %}"></script>
+{% endblock %}

@@ -8,5 +8,7 @@ admin.site.register(models.People)
 admin.site.register(models.Images)
 admin.site.register(models.Comment)
 admin.site.register(models.ProductAvailability)
+admin.site.register(models.ValidateCompany)
+admin.site.register(models.product_details)
 # admin.site.register(models.PostExtras)
 

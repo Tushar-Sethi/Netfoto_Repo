@@ -23,7 +23,7 @@
       <a href="{% url 'demo2' %}" class="nav_link--active">
         <img src="{% static 'FrontEnd1/Static_Images/NavBar/CovrPage_Home_B.png' %}" alt="">
       </a>
-      <a href="#" class="nav_link">
+      <a href="{% url 'Free_photograph' %}" class="nav_link">
         <img src="{% static 'FrontEnd1/Static_Images/NavBar/CovrPage_Free_Blk.png' %}" alt="">
       </a>
       <a href="{% url 'Add_Post' %}" class="nav_link">
@@ -46,6 +46,9 @@
   </head>
   <body>
     <div id="preloader"></div>
+    <div class="covr_page_logo" style="">
+      <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Logo.png' %}" alt="Error While Loading Image" style="width:70%; margin-left:15%;"/>
+    </div>
 <div>
     {% comment %} <button><a href="{% url 'login-in' %}">Login</a></button> {% endcomment %}
     <button class="btn btn-danger"><a href="{% url 'logout-out' %}" style="color:white; text-decoration:none">Logout</a></button>

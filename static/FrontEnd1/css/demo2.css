@@ -40,9 +40,7 @@
   padding-bottom: 40px;
   /* position:absolute; */
 }
-.swiper-horizontal .swiper-pagination{
-  /* left:120px; */
-}
+
 
 .Ad_Owner a{
     text-decoration: none;
@@ -141,16 +139,9 @@
 }
 .Ad-user-details .menu-button-post{
   align-items: center;
-  /* margin-top:20px; */
-  /* margin-left:150px; */
   cursor: pointer;
 }
 
-.Book_image_shadow{
-  /* margin-top:32px; */
-  /* box-shadow: -20px 20px 20px 0 rgba(0,0,0,0.3); */
-
-}
 .tags{
   /* display:none; */
   position:absolute;
@@ -309,6 +300,33 @@ width: 27px;
   color:white;
 }
 
+.Previous_button{
+  cursor: pointer;
+  position: absolute;
+  left:0.5%;
+  top:2px;
+  z-index: 999;
+  width: 100px;
+  height: 500px;
+ 
+}
+.Next_button{
+  cursor: pointer;
+  position: absolute;
+  left:80%;
+  top:2px;
+  z-index: 999;
+  width: 100px;
+  height: 500px;
+ 
+}
+
+.Previous_button:focus,
+.Next_button:focus{
+  outline: none;
+
+}
+
 @media screen and (max-width: 600px){
   .Index_main_Container{
     width: 90%;
@@ -341,5 +359,15 @@ width: 27px;
 .tags .tag_box{
   /* height:90% */
   width: 90%;
+}
+.Next_button{
+  cursor: pointer;
+  position: absolute;
+  left:80%;
+  top:2px;
+  z-index: 999;
+  width: 59px;
+  height: 500px;
+  outline: none;
 }
 }

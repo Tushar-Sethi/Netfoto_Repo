@@ -252,7 +252,7 @@ def login_register(request):
                     login(request, user)
                     if request.GET.get('next', None):
                         return redirect(request.GET['next'])
-                    return redirect('index')
+                    return redirect('demo2')
                 else:
                     messages.success(request, ("Invalid credentials"))
                     return redirect('first')
@@ -278,7 +278,7 @@ def login_register(request):
                     user = authenticate(request, username=username, password=password1)
                     if user is not None:
                         login(request, user)
-                        return redirect('index')
+                        return redirect('demo2')
                     else:
                         messages.success(request, ("Invalid credentials"))
                         # return redirect('first')

@@ -1,0 +1,14 @@
+{% extends 'Base.html'%} {% load static%} {% block styles %}
+<link rel="stylesheet" href="{% static 'FrontEnd1/css/Order_confirmation.css' %}" />
+{% endblock %} {% block title %} Order Confirmation {% endblock %} 
+{% block content %}
+
+<div style="width: 40%; margin:auto; text-align: center;">
+<div>Your Order has been confirmed and an email has been sent with the necessary details.</div>
+<div>Here is your order No for your refrence</div>
+    <b>{{PD.orderID}}</b>
+</div>
+{%endblock %}
+
+{% block scripts %}
+{% endblock %}
