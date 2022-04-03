@@ -28,13 +28,13 @@ function LikePost(id){
           if(data.message == "Liked"){
             document.getElementById('like_image_state_change_' + data.id).src=like_red_photo_path;
             // console.log(document.getElementById('like_count_index_' + data.id).innerHTML);
-            document.getElementById('like_count_index_' + data.id).innerHTML=data.likesCount;
+            document.getElementById('like_count_index_' + data.id).innerHTML=data.likesCount + ' Likes';
           } 
           else if(data.message == 'Like Removed'){
             document.getElementById('like_image_state_change_' + data.id).src=like_white_photo_path;
             
             console.log(document.getElementById('like_count_index_' + data.id).innerHTML);
-            document.getElementById('like_count_index_' + data.id).innerHTML=data.likesCount;
+            document.getElementById('like_count_index_' + data.id).innerHTML=data.likesCount + ' Likes';
           }
         }
         else{
@@ -165,10 +165,12 @@ function LikePost(id){
 
   function tag_box_show(id){
     document.getElementById('tag_box_'+id).style.visibility = 'visible';
+    document.getElementById('nxt_button'+id).style.height = '300px';
   }
 
   function hide_tag_box(id){
     document.getElementById('tag_box_'+id).style.visibility = 'hidden';
+    document.getElementById('nxt_button'+id).style.height = '420px';
   }
 
   function showcomments(id){
@@ -180,14 +182,12 @@ function LikePost(id){
       },
       dataType: 'json',
       success: function(data){
-        // console.log(data);
         if(data.status == 200){
-          console.log(data);
           var div_comments = document.getElementById('comment_model_box_space_'+id)
-          console.log('comment_model_box_space_'+id)
-          // div_comments.innerHTML = '';
           html = ''
-          for(var i=0; i<data.comments.length; i++){
+          
+          for(var i=0; i < data.comments.length; i++){
+            if(data.comments[i].people.photo != null){
           html += '<div class="comment_box" style="display:flex;">\
           <div style="margin-right:50px;">\
             <img src="'+data.comments[i].people.photo+'" alt="No photo" style="height:60px; width:60px; border-radius:50%;">\
@@ -198,6 +198,19 @@ function LikePost(id){
           </div>\
         </div>\
         <hr>'
+      }
+      else{
+        html += '<div class="comment_box" style="display:flex;">\
+        <div style="margin-right:50px;">\
+        <div style="height:60px; width:60px; background-color:black; color:white; border-radius:50%; text-align:center; line-height:50px; font-size:25px;">'+data.comments[i].user.username[0]+'</div>\
+        </div>\
+        <div>\
+          <div><p style="color:rgb(218, 33, 125); display:inline; font-size:22px;">'+data.comments[i].user.username+'</p><em> Says</em></div>\
+          <div style="font-size:25px;">' + data.comments[i].comment+'</div>\
+        </div>\
+      </div>\
+      <hr>'
+      }
           } 
           if(data.total_comments > 2){
             html += '<a href="#"> Read all comments</a>'

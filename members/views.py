@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from django.contrib.auth.models import User
-from Backend1.models import People
+from Backend1.models import People,product_orders
 import math
 import random
 from django.conf import settings
@@ -12,6 +12,8 @@ from random_username.generate import generate_username
 import random
 import string
 import re
+from datetime import datetime,timezone
+
 
 from django.contrib.auth.hashers import make_password
 
@@ -250,6 +252,14 @@ def login_register(request):
                 user = authenticate(request, username=username, password=password)
                 if user is not None:
                     login(request, user)
+                    people = People.objects.get(user__username=username)
+                    if(product_orders.objects.filter(people_id=people.id).exists()):
+                        PO = product_orders.objects.filter(people_id=people.id).all().order_by('-id')[0]
+                        if((datetime.now(timezone.utc) - PO.created_date).days > 30):
+                            people.step_1 = False
+                            people.step_2 = False
+                            people.step_3 = False
+                            people.save()
                     if request.GET.get('next', None):
                         return redirect(request.GET['next'])
                     return redirect('demo2')
@@ -301,3 +311,15 @@ def check_username(request):
             return JsonResponse({'message': 'Available', 'status': 'success'})
     else:
         print('error')
+
+
+def reset_password(request):
+    if(request.method == 'POST'):
+        email = request.POST['email']
+        user = User.objects.get(email=email)
+        username = user.username
+        #reset link
+
+        send_reset_email(username, password, email)
+        return JsonResponse({'message': 'Password Reset'})
+    return render(request, template_name='registration/reset-password.html')

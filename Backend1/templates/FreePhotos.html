@@ -14,11 +14,28 @@
     
 {% block content %}
 <div class="main_div_free_photos">
-Unlock Your <br><b>10 Free </b><br>Product Photos
+    <div class="header_images">
+        <img
+                src="{% static 'FrontEnd1/Static_Images/Free_Photos_Image.png' %}"
+                style="width: 100%; margin-top:20px;"
+              />
+    </div>
+
+    <div class="header_text">
+        <div class="header_text_normal">
+            Unlock Your 
+        </div>
+        <div class="header_text_bold">
+            10 Free
+        </div>
+        <div class="header_text_normal">
+        Product Photos
+        </div>
+    </div>
 
 <div style="margin:20px 0px;">
     <a href="{% url 'Free_photograph_form' %}">
-        <button class="btn btn-primary" >Claim your Photos Now</button>
+        <button class="btn claim" >Claim your Photos Now</button>
     </a>
 </div>
 <div class="instructions-main-div">
@@ -52,33 +69,63 @@ Unlock Your <br><b>10 Free </b><br>Product Photos
     <h2>Please Note</h2>
     <div class="Note">
             <div>
-                <h4>1</h4>
-                <h5>The photography done would be <br>only on white background.</h5>
+                <h4>FREE PHOTOS</h4>
+                <h5>Maximum 10 products, with 3 views per product 
+                    would be provided for free. No credit card or any 
+                    payment in any form would be required.</h5>
             </div>
             <div>
-                <h4>2</h4>
-                <h5> Maximum upto 3 views per product <br>would be provided.</h5>
+                <h4>PRODUCT DELIVERY COSTS</h4>
+                <h5>You would need to send the products to our 
+                    studios <b>at your own cost</b>. You can even hand 
+                    deliver to our studio in Gurugram. Also if you want 
+                    us to send back the products by courier, you 
+                    would need to pay for the courier cost yourself.</h5>
             </div>
             <div>
-                <h4>3</h4>
-                <h5>You would need to send the products to our studios at your own cost. You can even hand deliver to our studio in Gurugram. Also if you want us to send back the products by courier, you would need to pay for the courier cost yourself.</h5>
+                <h4>FREE PHOTO DETAILS
+                </h4>
+                <h5>The photography done would be only on white 
+                    background. 
+                    Apart from the product, no human models, props 
+                    or any additional supporting material would be 
+                    used for the photographs</h5>
             </div>
             <div>
-                <h4>4</h4>
-                <h5>Apart from the product, no human models, props or any additional supporting material would be used for the photographs.</h5>
+                <h4>FREE PHOTOS ONLY IN INDIA
+                </h4>
+                <h5>Free product photography offer is currently 
+                    restricted to companies regsitered (and having 
+                    offices, work facilties) only in India. 
+                    Users from outside India can however use the 
+                    free ecatalog making and display here at 
+                    CovrPage.</h5>
             </div>
             <div>
-                <h4>5</h4>
-                <h5>If you wish to order any other style of apart from the details mentioned in the above points, or you want more products to be photographed, you can write to us once you have ordered your 10 free photographs. A notes section would appear at the end of free order placement.</h5>
+                <h4>ADDITONAL PHOTO REQUIREMENTS?
+                </h4>
+                <h5>If you wish to order any other style of 
+                    photography apart from the details mentioned 
+                    above, and you are willing to pay for any other 
+                    additional photography services, please write to 
+                    us and we would contact you. You can write to us 
+                    here or even at the end of free order placement, 
+                    you can mention in the text box shown.</h5>
             </div>
+        </div>
+        <div style="color:#778490;">
+            If you want more Photographs, or looking for model images,
+            creative images or any other type of photographs for your
+            product, and you are willing to pay for these services,
+            you can write to us and we would get back to you.
+            <br>
+            <textarea name="" id="" placeholder="Write Here" style="width: 98%; height:100px; margin-top: 20px;"></textarea>
+            <button type="submit" class="btn" style="background-color: black; color: white; border-radius: 20px; padding: 7px 25px; margin-top: 14px;">Submit</button>
         </div>
     </div>
     
 
-<div class="free_photos_note">
 
-
-</div>
 
 </div>
 

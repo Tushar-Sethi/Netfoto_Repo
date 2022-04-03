@@ -19,12 +19,20 @@
 
 .form-group{
     /* background-color:  red; */
-    /* margin-bottom: 20px; */
+    margin-bottom: 20px;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #cacaca, #f0f0f0);
+    box-shadow: -7px 7px 14px #ffffff;
     padding:30px;
-    border-radius: 20px;
+    
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+.form-group #product__details{
+    width:100%;
+    margin-bottom: 10px;
 }
 
 .form-group h4{
@@ -48,15 +56,15 @@
 #option_9:checked ~ .option_9,
 #option_10:checked ~ .option_10
 {
-    background-color: rgb(110, 205, 218);
-    color: #000;
+    background-color: #000;
+    color: #fff;
 }
 
 #option_1_view:checked ~ .option_1_view,
 #option_2_view:checked ~ .option_2_view,
 #option_3_view:checked ~ .option_3_view{
-    background-color: rgb(110, 205, 218);
-    color: #000;
+    background-color: #000;
+    color: #fff;
 }
 
 

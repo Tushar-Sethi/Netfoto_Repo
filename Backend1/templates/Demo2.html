@@ -78,9 +78,9 @@
       <!-- Post setting Div -->
       <div class="menu-button-post">
         <img
-          src="{% static 'FrontEnd1/Static_Images/CovrPage_Comments.png' %}"
+          src="{% static 'FrontEnd1/Static_Images/CovrPage_Catalog_Menu.png' %}"
           alt=""
-          style="width: 30px; height: 30px"
+          style="width: 25px; height: 25px"
           data-bs-toggle="modal"
           data-bs-target="#post_menu{{i.post_id}}"
         />
@@ -220,6 +220,9 @@
           <div>
             <img class="main_Image" src="{{image.image.url}}" alt="hello"/>
           </div>
+          {% comment %} {% if forloop.first %}
+            <p><img src="https://images.unsplash.com/photo-1500625597061-d472abd2afbb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80" alt=""/></p>
+          {% endif %} {% endcomment %}
           {% endfor %}
           
         </div>
@@ -227,7 +230,7 @@
         {% if i.Tag1 is not none %}
         <div class="tags">
           <img
-                src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}"
+                src="{% static 'FrontEnd1/Static_Images/TAG_ICON.png' %}"
                 onclick="tag_box_show({{i.post_id}});"
               />
               <div class="text-center tag_box" id="tag_box_{{i.post_id}}">
@@ -242,16 +245,16 @@
                   <i
                     class="fa fa-window-close btn"
                     aria-hidden="true"
-                    style="color: white"
+                    style="color: black; font-size: 20px;"
                     onclick="hide_tag_box({{i.post_id}})"
                   ></i>
                 </div>
-                <hr />
+                <hr>
                 <p><a href="{{i.Tag1}}" target="_blank">{{i.Tag1_Name}}</a></p>
-                <hr />
+                <hr>
                 {% if i.Tag2 is not none %}
                 <p><a href="{{i.Tag2}}" target="_blank">{{i.Tag2_Name}}</a></p>
-                <hr />
+                <hr>
                 {% endif %} {% if i.Tag3 is not none %}
                 <p><a href="{{i.Tag3}}" target="_blank">{{i.Tag3_Name}}</a></p>
                 {% endif %}
@@ -298,15 +301,15 @@
 
 
 
-        <div style="display: flex; align-items: flex-end; margin-top: 20px;;">
-        <p class="para-img{{forloop.counter0}}" style="color:black; margin-left:50%;">1 </p>
-        <p class="" style="color:blac; display: inline;">  &nbsp/ {{i.images|length}}</p>
+        <div class="paginations" style="display: flex; align-items: flex-end; margin-top: 20px;">
+        <p class="para-img{{forloop.counter0}}" style="margin-left:50%;">1 </p>
+        <p class="" style="display: inline;">  &nbsp/ {{i.images|length}}</p>
       </div>
       
 
       <button class="Previous_button btn" onclick="pagedown({{forloop.counter0}})"><i class="fa fa-angle-left" aria-hidden="true"></i>
       </button>
-      <button class="Next_button btn" onclick="pageup({{forloop.counter0}})"><i class="fa fa-angle-right" aria-hidden="true"></i>
+      <button class="Next_button btn" id="nxt_button{{i.post_id}}" onclick="pageup({{forloop.counter0}})"><i class="fa fa-angle-right" aria-hidden="true"></i>
       </button>
 
     </div>
@@ -326,6 +329,35 @@
         />
         {{i.comments_count}} comments
       </div>
+
+      
+      <div
+        class="share"
+        onclick="share({{i.post_id}});"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal{{i.post_id}}"
+      >
+        <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}" />
+        Share
+      </div>
+
+      <div class="save">
+        {% if i.isSaved == True %}
+        <img
+          src="{% static 'FrontEnd1/Static_Images/Saved.png' %}"
+          id="save_image_state_change_{{i.post_id}}"
+          onclick="SavePost({{i.post_id}})"
+        />
+        {% else %}
+        <img
+          src="{% static 'FrontEnd1/Static_Images/Save.png' %}"
+          id="save_image_state_change_{{i.post_id}}"
+          onclick="SavePost({{i.post_id}})"
+        />
+        {% endif %}
+        <span id="save_status_{{i.post_id}}"> {{i.IsSaved}} </span>
+      </div>
+
       <div class="likes">
         {% if i.isLiked == True %}
         <img
@@ -340,33 +372,10 @@
           onclick="LikePost({{i.post_id}});"
         />
         {% endif %}
-        <span id="like_count_index_{{i.post_id}}"> {{i.likesCount}} </span>
+        <span id="like_count_index_{{i.post_id}}"> {{i.likesCount}} Likes </span>
       </div>
-      <div
-        class="share"
-        onclick="share({{i.post_id}});"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal{{i.post_id}}"
-      >
-        <img src="{% static 'FrontEnd1/Static_Images/CovrPage_Share.png' %}" />
-        Share
-      </div>
-      <div class="save">
-        {% if i.isSaved == True %}
-        <img
-          src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}"
-          id="save_image_state_change_{{i.post_id}}"
-          onclick="SavePost({{i.post_id}})"
-        />
-        {% else %}
-        <img
-          src="{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}"
-          id="save_image_state_change_{{i.post_id}}"
-          onclick="SavePost({{i.post_id}})"
-        />
-        {% endif %}
-        <span id="save_status_{{i.post_id}}"> {{i.IsSaved}} </span>
-      </div>
+
+
     </div>
     <!-- Icons below the Images to like, share, save till here-->
 
@@ -414,10 +423,10 @@
 
     <div class="Ad_Title_Desc">
       <h3>
-        <a href="{% url 'view_post' i.post_id %}"> {{ i.title }} </a>
+        <a href="{% url 'view_post' i.post_id %}"><b> {{ i.title }} </b></a>
       </h3>
       <p class="post-description">{{ i.description }}</p>
-      <p>{{i.created_at}}</p>
+      <p class="post_date">{{i.created_at}}</p>
     </div>
     <hr />
 
@@ -520,8 +529,8 @@
     "{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}";
   var like_white_photo_path =
     "{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}";
-  var Notsaved = "{% static 'FrontEnd1/Static_Images/CovrPage_Like_W.png' %}";
-  var saved = "{% static 'FrontEnd1/Static_Images/CovrPage_Like_R.png' %}";
+  var Notsaved = "{% static 'FrontEnd1/Static_Images/Save.png' %}";
+  var saved = "{% static 'FrontEnd1/Static_Images/Saved.png' %}";
   var hidePost = "{% url 'API-HidePost' %}";
   var savePost = "{% url 'API-SavePost' %}";
   var getcomments = "{% url 'API-GetComments' %}";

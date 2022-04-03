@@ -13,7 +13,7 @@
     /* background-color: red; */
 }
 .container12{
-  width: 90%;
+  width: 95%;
   margin:auto;
 }
 .Index_main_container p img{
@@ -22,7 +22,7 @@
 }
 .Ad_Title_Desc{
     text-align: center;
-    margin-top: 80px;
+    margin-top: 20px;
 }
 .Ad_Title_Desc h3 a{
   text-decoration: none;
@@ -30,8 +30,14 @@
 }
 
 .post-description{
-  margin-top: 15px;
-  margin-bottom: 40px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color:black;
+  font-size:15px;
+}
+.post_date{
+  font-size:13px;
+  color:#939EB5;
 }
 .Ad_Owner{
     text-align: center;
@@ -50,10 +56,12 @@
 
 
 .icons_data{
-    margin-top:70px;
+    margin-top:10px;
   display: flex;
   justify-content: space-around;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #939EB5;
 
 }
 
@@ -82,35 +90,34 @@
 }
 
 .main_Image{
-    width: 100%;
-    height:500px;
+  width: 100%;
+  height:506px;
   object-fit: cover;
   background-color: white;
 }
 
 .header_Image{
-  height:40px;
-  width:40px;
+  height:30px;
+  width:30px;
   border-radius:50%;
   background-color: black;
   margin:auto;
+  text-align: center;
 
 }
 .header_Image a{
   color:white;
-  font-size:22px;
+  font-size:15px;
   font-weight:bold;
-  margin-left:15px;
-  /* margin-top:10px; */
-  /* padding-top:20px; */
+  text-transform: lowercase;
   text-decoration: none;
 
 }
 .profile_image{
   margin: auto;
   /* background-color: aquamarine; */
-  height:40px;
-  width:40px;
+  height:30px;
+  width:30px;
 }
 .image_of_user{
   height:40px;
@@ -124,7 +131,14 @@
 .username_user a{
   text-decoration: none;
   color: black;
+  /* font-size:3px; */
 }
+.username_user h5{
+  margin-top: 8px;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
 .specific_user_main_div{
   margin-top:50px;
   /* align-items: center; */
@@ -147,21 +161,26 @@
   position:absolute;
   cursor: pointer; 
   z-index:999;
-  min-width: 90%;
-  min-height:300px;
-  top:40px;
-  /* background-color: red; */
+  width: 100%;
+  height:500px;
+  top:10px;
+  
 }
 
 .tags img{
   width: 25px;
   height: 25px;
-  /* top:40px; */
-  margin-left:100%;
-  margin-top: 70%;
+  margin-top: 80%;
+  margin-left:90%;
+
 }
 #photo_Tag_Box img{
-  height:20px; width:20px; position:absolute; bottom:20px; right:20px; cursor:pointer;
+  height:20px; 
+  width:20px; 
+  position:absolute; 
+  bottom:20px; 
+  right:20px; 
+  cursor:pointer;
 }
 
 /* Modal Box */
@@ -275,14 +294,15 @@ width: 27px;
 }
 .tag_box{
   position:absolute; 
-  /* bottom:100px;  */
+  bottom:20px; 
   margin-left:20px; 
-  border:0.5px solid red; 
+  border:0.5px solid black; 
   opacity:0.9; width:40%; 
   word-wrap: break-word; 
-  background-color:black; 
-  color:white; 
+  background-color:white; 
+  color:black; 
   padding:10px; 
+  border-radius: 20px;
   visibility:hidden;
   margin-top:-146px;
 }
@@ -297,7 +317,7 @@ width: 27px;
 }
 .tag_box a{
   text-decoration: none;
-  color:white;
+  color:black;
 }
 
 .Previous_button{
@@ -307,18 +327,23 @@ width: 27px;
   top:2px;
   z-index: 999;
   width: 100px;
-  height: 500px;
+  height: 420px;
  
 }
 .Next_button{
   cursor: pointer;
   position: absolute;
-  left:80%;
+  right:0.5%;
   top:2px;
   z-index: 999;
   width: 100px;
-  height: 500px;
+  height: 420px;
  
+}
+
+.paginations{
+  font-size: 13px;
+  color: #939EB5;
 }
 
 .Previous_button:focus,
@@ -349,25 +374,15 @@ width: 27px;
   .tag_box h6
 {
   font-weight: 300;
-  /* line-height: 1; */
 }
-.tags{
-  /* background-color: red; */
-  height: 80%;
-  width: 80%;
+
+
+.tags img{
+  margin-top:460px;
+  margin-left:89%;
 }
 .tags .tag_box{
-  /* height:90% */
   width: 90%;
 }
-.Next_button{
-  cursor: pointer;
-  position: absolute;
-  left:80%;
-  top:2px;
-  z-index: 999;
-  width: 59px;
-  height: 500px;
-  outline: none;
-}
+/* main_Image */
 }

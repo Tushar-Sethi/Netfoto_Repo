@@ -61,6 +61,7 @@ class People(models.Model):
     step_1 = models.BooleanField(default=False)
     step_2 = models.BooleanField(default=False)
     step_3 = models.BooleanField(default=False)
+    stages = models.TextField(default='',blank=True)
 
     Created_date = models.DateTimeField(auto_now_add=True)
     Updated_date = models.DateTimeField(auto_now=True)
@@ -87,7 +88,7 @@ class Comment(models.Model):
 
 
 
-class ValidateCompany(models.Model):
+class Stage1(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     Company_Name = models.CharField(max_length=255,null=True)
     GST_number = models.CharField(max_length=255,null=True)
@@ -106,8 +107,16 @@ class product_details(models.Model):
     send_products = models.CharField(max_length=255,null=True)
     send_products_back = models.CharField(max_length=255,null=True)
     product_additional_specifications = models.TextField(null=True)
-    orderID = models.CharField(max_length=255,null=True)
+    #orderID = models.CharField(max_length=255,null=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+class product_orders(models.Model):
+    orderID = models.CharField(max_length=255,null=True)
+    people = models.ForeignKey(People, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
 
 
+
+class Claim_free_photos_questions(models.Model):
+    phase = models.IntegerField()
+    question = models.CharField(max_length=255,null=True)

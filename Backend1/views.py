@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.admin import User
-from .models import Post, Category, People, Images, Comment, ProductAvailability, ValidateCompany, product_details
+from .models import Post, Category, People, Images, Comment, ProductAvailability, Stage1, product_details,product_orders
 from django.urls import reverse
 from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view
@@ -95,6 +95,9 @@ def index(request):
 
 
 def demo(request):
+    user = request.user
+    username = user.username
+    people = People.objects.get(user__username=username)
     return render(request, template_name='Demo.html')
 
 
@@ -421,7 +424,7 @@ def getFreePhotos(request):
 
 
 @login_required(login_url='/members/first/')
-def getFreePhotograph(request):
+def getFreePhotographs(request):
     if(request.user.is_authenticated):
         user_id = request.user.id
         user = get_object_or_404(User, pk=user_id)
@@ -429,7 +432,6 @@ def getFreePhotograph(request):
         if(people.step_3 == True):
             return redirect('come_back_later')
         if request.method == 'POST':
-            print(people.step_1)
             if(people.step_1 == False):
                 company_name = request.POST.get('Company_Name')
                 GST = request.POST.get('GST')
@@ -459,9 +461,67 @@ def getFreePhotograph(request):
                 return redirect('Another_Post_or_Not')
             return redirect('unlock_free_photos_post_ad')
         return render(request, template_name='FreePhotograph.html')
-
     return redirect('members/login_me_in')
 
+@login_required(login_url='/members/first/')
+def getFreePhotograph(request):
+    if(request.user.is_authenticated):
+        user_id = request.user.id
+        user = get_object_or_404(User, pk=user_id)
+        people = user.people
+        stage = people.stages.split(',')[-1]
+        if(request.method == 'POST'):
+            if(stage != ''):
+                if(stage == '1'):
+                    print('Stage2')
+                elif(stage == '2'):
+                    print('stage3')
+                #other code goes here
+
+            else:
+                company_name = request.POST.get('Company_Name')
+                GST = request.POST.get('GST')
+                company_address1 = request.POST.get('Company_Address1')
+                company_address2 = request.POST.get('Company_Address2')
+                City = request.POST.get('City')
+                State = request.POST.get('State')
+                pincode = request.POST.get('Pincode')
+                About = request.POST.get('About')
+                Stage1(user=user, 
+                    Company_Name = company_name, 
+                    GST_number = GST, 
+                    Company_Address1 = company_address1,
+                    Company_Address2 = company_address2,
+                    City = City,
+                    State = State,
+                    pinCode = pincode,
+                    About = About
+                    ).save()
+            people.step_1 = True
+            people.save()
+            if(people.step_2 == False):
+                return redirect('unlock_free_photos_post_ad')
+            return redirect('Another_Post_or_Not')
+        else:
+            if(people.step_3 == True):
+                return redirect('come_back_later')
+            else:
+                if(people.step_1 == True):
+                    if(people.step_2 == True):
+                        return redirect("photography_order_details")
+                    else:
+                        return redirect("unlock_free_photos_post_ad")
+                else:
+                    if(stage != ''):
+                        if(stage == "1"):
+                            return render(request, template_name='Stage2.html')
+                        elif(stage == "2"):
+                            return render(request, template_name='Stage3.html')
+                        #other code goes here
+                    else:
+                        return render(request, template_name='Stage1.html')
+                
+    # return redirect('members/login_me_in')
 
 def unlock_free_photos_post_ad(request):
     if(request.user.is_authenticated):
@@ -494,17 +554,17 @@ def unlock_free_photos_post_ad(request):
             people.save()
             return redirect('photography_order_details')
         if(people.step_2 == True):
-            return redirect('photography_order_details')
+            return redirect('Another_Post_or_Not')
         return render(request, template_name='Unlock_free_photos_create_post.html')
     return redirect('members/login_me_in')
 
 
 def order_details(request):
     if(request.user.is_authenticated):
+        user_id = request.user.id
+        user = get_object_or_404(User, pk=user_id)
+        people = user.people
         if(request.method == 'POST'):
-            user_id = request.user.id
-            user = get_object_or_404(User, pk=user_id)
-            people = user.people
             if(people.step_1 == False):
                 # messages.error(request, 'Please fill the essential Information')
                 return redirect('Free_photograph_form')
@@ -518,20 +578,37 @@ def order_details(request):
             send_products_back = request.POST.get('send_products_back_name')
             additional_specifications = request.POST.get(
                 'specifications_product_photography')
-
             PD = product_details(people=people, Product_Name=product_name, no_of_products=no_of_products, no_of_views=no_of_views,
                                  send_products=how_sending_products, send_products_back=send_products_back, product_additional_specifications=additional_specifications)
             PD.save()
             order_ID = ran_gen(8)
-            PD.orderID = order_ID
-            PD.save()
+            Order = product_orders(people_id = people.id, orderID=order_ID)
+            Order.save()
             people.step_3 = True
+            stage = people.stages
+            if(people.stages == ''):
+                people.stages = '1'
+            else:
+                stage = stage.split(',')
+                last_stage = stage[-1]
+                next_stage = str(int(last_stage) + 1)
+                stage.append(next_stage)
+                listToStr = ','.join(map(str, stage))
+                people.stages = listToStr
             people.save()
             return redirect('photography_order_confirmed')
-        return render(request, template_name='Order_details.html')
+        else:
+            if(people.step_1 == False):
+                return redirect('Free_photograph_form')
+            if(people.step_2 == False):
+                return redirect('unlock_free_photos_post_ad')
+            if(people.step_3 == True):
+                return redirect('come_back_later')
+            else:
+                return render(request, template_name='Order_details.html')
     return redirect('members/login_me_in')
 
-
+@login_required(login_url='members/login_me_in')
 def order_confirmed(request):
     if(request.user.is_authenticated):
         user_id = request.user.id
@@ -543,9 +620,9 @@ def order_confirmed(request):
             return redirect('unlock_free_photos_post_ad')
         if(people.step_3 == False):
             return redirect('order_details')
-        PD = product_details.objects.get(people=people)
-
-        return render(request, template_name='Order_confirmed.html', context={'PD': PD})
+        PD = product_details.objects.filter(people=people).all().order_by('-id')[0]
+        Order = product_orders.objects.filter(people_id=people.id).all().order_by('-id')[0]
+        return render(request, template_name='Order_confirmed.html', context={'PD': PD, 'Order': Order})
     return redirect('members/login_me_in')
 
 

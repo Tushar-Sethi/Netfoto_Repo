@@ -9,11 +9,12 @@
     <form method="POST" action="" id="order_details_form">
       {% csrf_token %}
       <div class="form-group">
-        <label for="product-details">What's your Product</label>
+        <label for="product-details" id="product__details">What's your Product</label>
         <input
           type="text"
           name="product-name"
           placeholder="Enter your Product type"
+          class="form-control"
           required
         />
       </div>
@@ -242,7 +243,8 @@
           id=""
           cols="40"
           rows="3"
-          style="width: 90%"
+          style="width: 90%; margin:auto;"
+          class="form-control"
         ></textarea>
       </div>
 

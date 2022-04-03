@@ -14,5 +14,9 @@ urlpatterns = [
     path('api/CheckEmail',views.CheckEmail,name='CheckEmail'),
     path('api/checkOTP',views.check_OTP,name='checkOTP'),
     path('login_register/', views.login_register, name='login_register'),
+    path('reset-password/',views.reset_password,name = 'reset_password'),
+    
+    
     path('api/check_username',views.check_username,name="UsernameAvailability")
+
 ]
