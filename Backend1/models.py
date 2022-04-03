@@ -120,3 +120,6 @@ class product_orders(models.Model):
 class Claim_free_photos_questions(models.Model):
     phase = models.IntegerField()
     question = models.CharField(max_length=255,null=True)
+
+class Test(models.Model):
+    myName = models.CharField(max_length=255,null=True)
